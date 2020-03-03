@@ -95,6 +95,7 @@ stages:
       dsiApiUrl: '$(dsiApiUrl)'
       dsiApiSecret: '$(dsiApiSecret)'
       sandbox: '$(sandbox)'
+      qaUserUidsUrl: '$(qaUserUidsUrl)'
 
 - stage: deploy_sandbox
   displayName: 'Deploy - Sandbox'
@@ -150,6 +151,7 @@ stages:
       dsiApiUrl: '$(dsiApiUrl)'
       dsiApiSecret: '$(dsiApiSecret)'
       sandbox: '$(sandbox)'
+      qaUserUidsUrl: '$(qaUserUidsUrl)'
 
 
 - stage: deploy_production
@@ -208,3 +210,4 @@ stages:
       dsiApiUrl: '$(dsiApiUrl)'
       dsiApiSecret: '$(dsiApiSecret)'
       sandbox: '$(sandbox)'
+      qaUserUidsUrl: '$(qaUserUidsUrl)'

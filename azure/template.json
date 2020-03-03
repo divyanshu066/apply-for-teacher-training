@@ -378,6 +378,12 @@
             "metadata": {
                 "description": "Set this to 'true' to switch on Sandox-specific business logic"
             }
+        },
+        "qaUserUidsUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "A URL containing a newline-separated list of DSI user IDs to set up as support and provider users on QA"
+            }
         }
     },
     "variables": {
@@ -735,6 +741,10 @@
                             {
                                 "name": "SANDBOX",
                                 "value": "[parameters('sandbox')]"
+                            },
+                            {
+                                "name": "QA_USER_UIDS_URL",
+                                "value": "[parameters('qaUserUidsUrl')]"
                             }
                         ]
                     }

@@ -280,6 +280,7 @@ stages:
       dsiApiUrl: '$(dsiApiUrl)'
       dsiApiSecret: '$(dsiApiSecret)'
       sandbox: '$(sandbox)'
+      qaUserUidsUrl: '$(qaUserUidsUrl)'
 
 
 - stage: deploy_devops
@@ -336,3 +337,4 @@ stages:
       dsiApiUrl: '$(dsiApiUrl)'
       dsiApiSecret: '$(dsiApiSecret)'
       sandbox: '$(sandbox)'
+      qaUserUidsUrl: '$(qaUserUidsUrl)'

@@ -60,6 +60,7 @@ parameters:
   govukNotifyCallbackAPIKey:
   dsiApiUrl:
   dsiApiSecret:
+  qaUserUidsUrl:
 
 jobs:
   - deployment: deploy_${{parameters.resourceEnvironmentName}}
@@ -115,7 +116,7 @@ jobs:
 
                 #Get the commit hash for the current version deployed in the environment
                 $currentDeployedCommit = (Get-AzureRmResourceGroup -Name $resourceGroupName).Tags.Version
-                 
+
                 #Get the timestamp of the last update to the variable groups corresponding to the environment defined
                 $variableGroupUri = "https://dev.azure.com/dfe-ssp/Become-A-Teacher/_apis/distributedtask/variablegroups"
                 $variableGroups = Invoke-RestMethod -Method Get -Uri $variableGroupUri -Headers @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
@@ -155,7 +156,7 @@ jobs:
                     write-host "Full ARM deployment required - Template/pipeline file changes detected."
                   }
                 }
-                
+
                 Write-Host "##vso[task.setvariable variable=fullDeployment]$fullDeployment"
 
           - task: AzureResourceGroupDeployment@2
@@ -224,7 +225,8 @@ jobs:
                 -dsiApiUrl "${{parameters.dsiApiUrl}}"
                 -dsiApiSecret "${{parameters.dsiApiSecret}}"
                 -govukNotifyCallbackAPIKey "${{parameters.govukNotifyCallbackAPIKey}}"
-                -sandbox "${{parameters.sandbox}}"'
+                -sandbox "${{parameters.sandbox}}"
+                -qaUserUidsUrl: "${{parameters.qaUserUidsUrl)"'
               deploymentOutputs: DeploymentOutput
 
           - task: AzureCLI@2
@@ -270,7 +272,7 @@ jobs:
 
                   $entrypointCommand = "$($containerConfig.properties.parameters.command.value[0..1]) '$($containerConfig.properties.parameters.command.value[2..$containerConfig.properties.parameters.command.value.length])'"
                   write-host ("DEBUG - entrypoint command used for '{0}' container instance: {1}" -f $container, $entrypointCommand)
-                  
+
                   $tags = @()
                   foreach ( $tag in $containerConfig.properties.parameters.resourceTags.value | get-member -MemberType NoteProperty | select -ExpandProperty Name ) {
                     $tags += "`"$($tag)`"=`"$($containerConfig.properties.parameters.resourceTags.value.$tag)`""
