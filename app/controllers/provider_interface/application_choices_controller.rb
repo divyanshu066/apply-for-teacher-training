@@ -14,6 +14,16 @@ module ProviderInterface
       else
         @application_choices = application_choices
       end
+
+      respond_to do |format|
+        format.html
+        format.csv do
+          send_data(
+            ApplicationChoicesCsvPresenter.new(@application_choices).present,
+            filename: ApplicationChoicesCsvPresenter.filename,
+          )
+        end
+      end
     end
 
     def show
