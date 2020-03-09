@@ -76,6 +76,7 @@ module CandidateHelper
   def candidate_submits_application
     click_link 'Check your answers before submitting'
     click_link 'Continue'
+
     choose 'No' # "Is there anything else you would like to tell us?"
 
     click_button 'Submit application'

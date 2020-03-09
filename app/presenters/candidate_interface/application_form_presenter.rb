@@ -106,15 +106,33 @@ module CandidateInterface
     end
 
     def maths_gcse_completed?
-      @application_form.maths_gcse.present?
+      if @application_form.maths_gcse.present?
+        if @application_form.maths_gcse.qualification_type != 'missing'
+          @application_form.maths_gcse.grade.present? && @application_form.maths_gcse.award_year.present?
+        else
+          true
+        end
+      end
     end
 
     def english_gcse_completed?
-      @application_form.english_gcse.present?
+      if @application_form.english_gcse.present?
+        if @application_form.english_gcse.qualification_type != 'missing'
+          @application_form.english_gcse.grade.present? && @application_form.english_gcse.award_year.present?
+        else
+          true
+        end
+      end
     end
 
     def science_gcse_completed?
-      @application_form.science_gcse.present?
+      if @application_form.science_gcse.present?
+        if @application_form.science_gcse.qualification_type != 'missing'
+          @application_form.science_gcse.grade.present? && @application_form.science_gcse.award_year.present?
+        else
+          true
+        end
+      end
     end
 
     def other_qualifications_completed?

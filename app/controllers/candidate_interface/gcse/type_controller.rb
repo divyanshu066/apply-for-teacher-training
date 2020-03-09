@@ -11,6 +11,8 @@ module CandidateInterface
     def update
       @application_qualification = find_or_build_qualification_form
 
+      qualification_params['missing_explanation'] = nil unless qualification_params['qualification_type'] == 'missing'
+
       @application_qualification.set_attributes(qualification_params)
 
       if @application_qualification.save_base(current_candidate.current_application)
