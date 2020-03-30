@@ -1,7 +1,7 @@
 class SupportUser < ActiveRecord::Base
   include Discard::Model
 
-  validates :dfe_sign_in_uid, presence: true
+  validates :dfe_sign_in_uid, presence: true, uniqueness: true
   validates :email_address, presence: true, uniqueness: true
 
   before_save :downcase_email_address
