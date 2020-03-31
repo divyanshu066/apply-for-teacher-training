@@ -63,4 +63,29 @@ RSpec.describe ProviderUser, type: :model do
       expect(provider_user.associated_audits.first.audited_changes['provider_id']).to eq provider.id
     end
   end
+
+  describe 'can_manage_users?' do
+    let(:provider) { create(:provider) }
+    let(:another_provider) { create(:provider) }
+    let(:provider_user) { create :provider_user, providers: [provider, another_provider] }
+
+    context 'when the current provider user is not permitted to manage users for any provider' do
+      it 'is false' do
+        expect(provider_user.can_manage_users?(provider: provider)).to be false
+        expect(provider_user.can_manage_users?(provider: another_provider)).to be false
+      end
+    end
+
+    context 'when the current provider user is permitted to manage users for a provider' do
+      before { provider_user.provider_users_providers.first.update(manage_users: true) }
+
+      it 'is true' do
+        expect(provider_user.can_manage_users?(provider: provider)).to be true
+      end
+
+      it 'is false for other providers' do
+        expect(provider_user.can_manage_users?(provider: another_provider)).to be false
+      end
+    end
+  end
 end

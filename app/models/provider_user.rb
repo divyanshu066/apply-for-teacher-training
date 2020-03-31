@@ -9,6 +9,10 @@ class ProviderUser < ActiveRecord::Base
   audited except: [:last_signed_in_at]
   has_associated_audits
 
+  def can_manage_users?(provider:)
+    provider_users_providers.exists?(provider: provider, manage_users: true)
+  end
+
   def self.load_from_session(session)
     dfe_sign_in_user = DfESignInUser.load_from_session(session)
     return unless dfe_sign_in_user
