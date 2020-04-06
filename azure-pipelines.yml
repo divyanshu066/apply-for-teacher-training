@@ -15,6 +15,10 @@ variables:
   value: true
 - name: deployOnly
   value: false
+- name: BUNDLE_PATH
+  value: $(Pipeline.Workspace)/.bundle
+- name: YARN_CACHE_PATH
+  value: $(Pipeline.Workspace)/.yarn
 
 stages:
 - stage: build_test_release
@@ -38,7 +42,32 @@ stages:
         echo '##vso[task.setvariable variable=compose_file]docker-compose.yml:docker-compose.azure.yml'
         echo "##vso[build.updatebuildnumber]$GIT_SHORT_SHA"
         echo "##vso[task.setvariable variable=docker_path;]$docker_path"
+        mkdir $(BUNDLE_PATH)
+        mkdir $(YARN_CACHE_PATH)
       displayName: 'Set version number'
+
+    - task: Cache@2
+      inputs:
+        key: 'gems | "$(Agent.OS)" | Gemfile.lock'
+        restoreKeys: |
+          gems | "$(Agent.OS)"
+          gems
+        path: $(BUNDLE_PATH)
+      displayName: Cache gems
+
+    - script: bundle install
+      env:
+        BUNDLE_PATH: $(BUNDLE_PATH)
+      displayName: Bundle install
+
+    - task: Cache@2
+      inputs:
+        keys: 'yarn | "$(Agent.OS)" | yarn.lock'
+        restoreKeys: |
+          yarn | "$(Agent.OS)"
+          yarn
+        path: $(YARN_CACHE_PATH)
+      displayName: Cache Yarn packages
 
     - script: make setup
       displayName: 'Build & setup'
