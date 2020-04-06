@@ -46,6 +46,11 @@ stages:
         mkdir $(YARN_CACHE_PATH)
       displayName: 'Set version number'
 
+    - task: UseRubyVersion@0
+      inputs:
+        versionSpec: '>= 2.6'
+        addToPath: true
+
     - task: Cache@2
       inputs:
         key: 'gems | "$(Agent.OS)" | Gemfile.lock'
@@ -55,7 +60,9 @@ stages:
         path: $(BUNDLE_PATH)
       displayName: Cache gems
 
-    - script: bundle install
+    - script: |
+        gem install bundler --version 2.1.4
+        bundle install
       env:
         BUNDLE_PATH: $(BUNDLE_PATH)
       displayName: Bundle install
