@@ -60,21 +60,22 @@ stages:
         path: $(BUNDLE_PATH)
       displayName: Cache gems
 
-    - script: |
-        gem install bundler --version 2.1.4
-        bundle install
-      env:
-        BUNDLE_PATH: $(BUNDLE_PATH)
-      displayName: Bundle install
-
     - task: Cache@2
       inputs:
         keys: 'yarn | "$(Agent.OS)" | yarn.lock'
         restoreKeys: |
           yarn | "$(Agent.OS)"
-          yarn
         path: $(YARN_CACHE_PATH)
       displayName: Cache Yarn packages
+
+    - script: |
+        apt install yarn
+        gem install bundler --version 2.1.4
+        bundle install
+        yarn install --modules-folder $(YARN_CACHE_PATH)
+      env:
+        BUNDLE_PATH: $(BUNDLE_PATH)
+      displayName: Bundle & Yarn install
 
     - script: make setup
       displayName: 'Build & setup'
