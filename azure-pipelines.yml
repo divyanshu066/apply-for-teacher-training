@@ -62,7 +62,7 @@ stages:
 
     - task: Cache@2
       inputs:
-        keys: 'yarn | "$(Agent.OS)" | yarn.lock'
+        key: 'yarn | "$(Agent.OS)" | yarn.lock'
         restoreKeys: |
           yarn | "$(Agent.OS)"
         path: $(YARN_CACHE_PATH)
