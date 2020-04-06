@@ -48,7 +48,7 @@ stages:
 
     - task: UseRubyVersion@0
       inputs:
-        versionSpec: '>= 2.6'
+        versionSpec: '=2.6.5'
         addToPath: true
 
     - task: Cache@2
