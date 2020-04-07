@@ -27,6 +27,6 @@ services:
       - DSI_API_SECRET
       - SANDBOX
     volumes:
-      - bundle_path:/gems
+      - $(BUNDLE_PATH):/gems
 volumes:
-  bundle_path: $(BUNDLE_PATH)
+  bundle_path:
