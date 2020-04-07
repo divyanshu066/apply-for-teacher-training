@@ -46,10 +46,10 @@ stages:
         mkdir $(YARN_CACHE_PATH)
       displayName: 'Set version number'
 
-    - task: UseRubyVersion@0
-      inputs:
-        versionSpec: '=2.6.5'
-        addToPath: true
+#    - task: UseRubyVersion@0
+#      inputs:
+#        versionSpec: '=2.6.5'
+#        addToPath: true
 
     - task: Cache@2
       inputs:
@@ -68,14 +68,14 @@ stages:
         path: $(YARN_CACHE_PATH)
       displayName: Cache Yarn packages
 
-    - script: |
-        sudo apt-get -y install build-essential yarn nodejs git graphviz ttf-ubuntu-font-family
-        gem install bundler -v 2.1.4
-        bundle install
-        #yarn install --modules-folder $(YARN_CACHE_PATH)
-      env:
-        BUNDLE_PATH: $(BUNDLE_PATH)
-      displayName: Bundle & Yarn install
+#    - script: |
+#        sudo apt-get -y install build-essential yarn nodejs git graphviz ttf-ubuntu-font-family
+#        gem install bundler -v 2.1.4
+#        bundle install
+#        #yarn install --modules-folder $(YARN_CACHE_PATH)
+#      env:
+#        BUNDLE_PATH: $(BUNDLE_PATH)
+#      displayName: Bundle & Yarn install
 
     - script: make setup
       displayName: 'Build & setup'
