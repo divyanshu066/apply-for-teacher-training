@@ -72,7 +72,7 @@ stages:
         sudo apt-get -y install build-essential yarn nodejs git graphviz ttf-ubuntu-font-family
         gem install bundler -v 2.1.4
         bundle install
-        yarn install --modules-folder $(YARN_CACHE_PATH)
+        #yarn install --modules-folder $(YARN_CACHE_PATH)
       env:
         BUNDLE_PATH: $(BUNDLE_PATH)
       displayName: Bundle & Yarn install
