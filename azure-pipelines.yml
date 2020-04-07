@@ -69,7 +69,7 @@ stages:
       displayName: Cache Yarn packages
 
     - script: |
-        apt install build-base yarn nodejs postgresql-dev git graphviz ttf-ubuntu-font-family
+        sudo apt-get -y install build-base yarn nodejs postgresql-dev git graphviz ttf-ubuntu-font-family
         gem install bundler -v 2.1.4
         bundle install
         yarn install --modules-folder $(YARN_CACHE_PATH)
