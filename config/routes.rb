@@ -441,6 +441,7 @@ Rails.application.routes.draw do
 
     get '/provider-users' => 'provider_users#index'
     get '/provider-users/new' => 'provider_users#new'
+    get '/provider-users/:id' => 'provider_users#show', as: :provider_user
     post '/provider-users' => 'provider_users#create'
   end
 

@@ -6,6 +6,10 @@ module ProviderInterface
       @provider_users = ProviderUser.visible_to(current_provider_user)
     end
 
+    def show
+      @provider_user = ProviderUser.find_by(id: params[:id])
+    end
+
     def new
       unless current_provider_user.can_manage_users?
         flash[:warning] = 'You need specific permissions to manage other providers.'
