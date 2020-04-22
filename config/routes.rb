@@ -439,10 +439,10 @@ Rails.application.routes.draw do
     get '/sign-in' => 'sessions#new'
     get '/sign-out' => 'sessions#destroy'
 
-    get '/provider-users' => 'provider_users#index'
-    get '/provider-users/new' => 'provider_users#new'
-    get '/provider-users/:id' => 'provider_users#show', as: :provider_user
-    post '/provider-users' => 'provider_users#create'
+    resources :provider_users, only: %i[index new create show], path: 'provider-users' do
+      get 'edit-providers' => 'provider_users#edit_providers', as: :edit_providers
+      patch 'update-providers' => 'provider_users#update_providers', as: :update_providers
+    end
   end
 
   get '/auth/dfe/callback' => 'dfe_sign_in#callback'

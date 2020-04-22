@@ -38,11 +38,33 @@ module ProviderInterface
       redirect_to provider_interface_provider_users_path
     end
 
+    def edit_providers
+      provider_user = ProviderUser.find(params[:provider_user_id])
+      @form = ProviderUserForm.from_provider_user(provider_user)
+      @form.current_provider_user = current_provider_user
+    end
+
+    def update_providers
+      provider_user = ProviderUser.find(params[:provider_user_id])
+      provider_user.assign_attributes(provider_user_params.except(:permissions))
+      @form = ProviderUserForm.from_provider_user(provider_user)
+      service = SaveProviderUser.new(provider_user: provider_user, permissions: permissions_params)
+
+      render :edit_providers and return unless service.call!
+
+      flash[:success] = 'Providers updated'
+      redirect_to provider_interface_provider_user_path(provider_user)
+    end
+
   private
 
     def provider_user_params
       params.require(:provider_interface_provider_user_form)
-            .permit(:email_address, :first_name, :last_name, provider_ids: [])
+            .permit(:email_address, :first_name, :last_name, provider_ids: [], permissions: {})
+    end
+
+    def permissions_params
+      provider_user_params.fetch(:permissions, {})
     end
 
     def requires_provider_add_provider_users_feature_flag
