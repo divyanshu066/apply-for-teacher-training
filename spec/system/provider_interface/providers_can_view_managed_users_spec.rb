@@ -35,6 +35,10 @@ RSpec.feature 'Provider invites a new provider user' do
 
   def the_users_details_should_be_visible
     expect(page).to have_content('Joe Blogs')
+    expect(page).to have_content('Permissions')
+    expect(page).to have_content('Manage users')
+    expect(page).to have_content('Example Provider')
+    expect(page).to have_content('Another Provider')
   end
 
   def and_i_click_on_a_users_name

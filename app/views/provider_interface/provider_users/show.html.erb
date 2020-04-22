@@ -1,1 +1,1 @@
-<h1 class="govuk-heading-xl"><%= @provider_user.full_name %></h1>
+<%= render ProviderInterface::ProviderUserDetailsComponent.new(provider_user: @provider_user) %>
