@@ -21,9 +21,15 @@ module ProviderInterface
         },
         {
           key: 'Permissions',
-          value: render(ProviderInterface::ProviderPermissionsListComponent.new(provider_user: @provider_user, permissions: @permissions)),
-          change_path: '#', action: 'Change'
-        }
+          value: render(
+            ProviderInterface::ProviderPermissionsListComponent.new(
+              provider_user: @provider_user,
+              permissions: @permissions,
+            ),
+          ),
+          change_path: provider_interface_provider_user_edit_providers_path(@provider_user),
+          action: 'Change',
+        },
       ]
     end
   end

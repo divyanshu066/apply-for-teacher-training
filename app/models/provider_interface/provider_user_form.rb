@@ -3,7 +3,7 @@ module ProviderInterface
     include ActiveModel::Model
     include ActiveModel::Validations
 
-    attr_accessor :first_name, :last_name, :provider_user, :current_provider_user
+    attr_accessor :first_name, :last_name, :provider_user, :current_provider_user, :permissions
     attr_writer :provider_ids
     attr_reader :email_address
 
@@ -38,6 +38,7 @@ module ProviderInterface
         last_name: provider_user.last_name,
         email_address: provider_user.email_address,
         provider_ids: provider_user.provider_ids,
+        permissions: ProviderPermissionsOptions.for_provider_user(provider_user),
       )
     end
 
