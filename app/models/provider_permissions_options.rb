@@ -20,10 +20,4 @@ class ProviderPermissionsOptions
 
     new(permissions_attributes)
   end
-
-  def self.reset_attributes
-    {}.tap do |hsh|
-      VALID_PERMISSIONS.each { |p| hsh[p] = false }
-    end
-  end
 end
