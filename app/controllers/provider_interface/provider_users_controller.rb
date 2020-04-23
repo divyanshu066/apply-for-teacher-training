@@ -1,6 +1,7 @@
 module ProviderInterface
   class ProviderUsersController < ProviderInterfaceController
-    before_action :requires_provider_add_provider_users_feature_flag, only: %i[new create]
+    before_action :requires_provider_add_provider_users_feature_flag
+    before_action :redirect_unless_permitted_to_manage_users
 
     def index
       @provider_users = ProviderUser.visible_to(current_provider_user)
@@ -69,6 +70,11 @@ module ProviderInterface
 
     def requires_provider_add_provider_users_feature_flag
       raise unless FeatureFlag.active?('provider_add_provider_users')
+    end
+
+    def redirect_unless_permitted_to_manage_users
+      can_manage_users = ProviderPermissions.exists?(provider_user: current_provider_user, manage_users: true)
+      redirect_to root_path, warning: 'You do not have sufficient permissions to manage other users' unless can_manage_users
     end
   end
 end
