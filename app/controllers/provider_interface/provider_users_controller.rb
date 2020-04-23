@@ -8,6 +8,7 @@ module ProviderInterface
 
     def show
       @provider_user = ProviderUser.find_by(id: params[:id])
+      @permissions = ProviderPermissionsOptions.for_provider_user(@provider_user)
     end
 
     def new

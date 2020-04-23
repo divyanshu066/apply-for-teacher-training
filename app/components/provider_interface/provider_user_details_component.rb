@@ -3,10 +3,10 @@ module ProviderInterface
     include ViewHelper
     attr_reader :header
 
-    def initialize(provider_user:, options: {})
+    def initialize(provider_user:, permissions:)
       @provider_user = provider_user
       @header = provider_user.full_name
-      @options = options
+      @permissions = permissions
     end
 
     def rows
@@ -21,7 +21,7 @@ module ProviderInterface
         },
         {
           key: 'Permissions',
-          value: render(ProviderInterface::ProviderPermissionsListComponent.new(provider_user: @provider_user)),
+          value: render(ProviderInterface::ProviderPermissionsListComponent.new(provider_user: @provider_user, permissions: @permissions)),
           change_path: '#', action: 'Change'
         }
       ]

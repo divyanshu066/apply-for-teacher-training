@@ -1,9 +1,8 @@
-<% provider_permisstions_obj = ProviderPermissionsOptions.for_provider_user(provider_user) %>
 <% provider_user.providers.each do |provider| %>
   <h4><%= provider.name %></h4>
   <ul>
     <% ProviderPermissionsOptions::VALID_PERMISSIONS.each do |permission| %>
-      <li><%= permission.to_s.humanize if provider_permisstions_obj.send(permission).include?(provider.id) %></li>
+      <li><%= permission.to_s.humanize if permissions.send(permission).include?(provider.id) %></li>
     <% end %>
   </ul>
 <% end %>
