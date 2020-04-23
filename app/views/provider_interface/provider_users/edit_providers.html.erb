@@ -5,14 +5,13 @@
   </h1>
 </legend>
 
-
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= form_with model: @form, url: provider_interface_provider_user_update_providers_path do |f| %>
       <%= f.govuk_error_summary %>
-      <%# TODO: Identical to support interface provider user checkboxes. %>
+
       <%= f.govuk_check_boxes_fieldset :provider, legend: { text: 'Provider' } do %>
-        <div class="app-checkboxes-scroll" %>
+        <div class="app-checkboxes-scroll">
           <% f.object.available_providers.each do |provider| %>
             <%= f.govuk_check_box :provider_ids, provider.id, label: { text: provider.name_and_code } do %>
               <%= f.fields_for :permissions, f.object.permissions  do |pm| %>
@@ -24,6 +23,7 @@
           <% end %>
         </div>
       <% end %>
+
       <%= f.govuk_submit 'Update providers' %>
     <% end %>
   </div>

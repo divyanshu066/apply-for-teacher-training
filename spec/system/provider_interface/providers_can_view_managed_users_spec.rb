@@ -1,4 +1,3 @@
-
 require 'rails_helper'
 
 RSpec.feature 'Provider invites a new provider user' do
@@ -56,7 +55,7 @@ RSpec.feature 'Provider invites a new provider user' do
   end
 
   def and_i_click_on_a_users_name
-    click_link("Joe Blogs", :match => :first)
+    click_link('Joe Blogs', match: :first)
   end
 
   def the_users_details_should_be_visible
@@ -66,5 +65,4 @@ RSpec.feature 'Provider invites a new provider user' do
     expect(page).to have_content('Example Provider')
     expect(page).to have_content('Another Provider')
   end
-
 end

@@ -7,6 +7,5 @@ module ProviderInterface
       @provider_user = provider_user
       @permissions = permissions
     end
-
   end
 end
