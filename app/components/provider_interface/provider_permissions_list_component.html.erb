@@ -2,8 +2,12 @@
   <h4><%= provider.name %></h4>
   <ul id="provider-<%= provider.id %>-enabled-permissions">
     <% ProviderPermissionsOptions::VALID_PERMISSIONS.each do |permission_name| %>
-      <% permitted_provider_ids = permissions.send(permission_name) -%>
-      <li><%= permission_name.to_s.humanize if permitted_provider_ids&.include?(provider.id) %></li>
+      <% permitted_provider_ids = permissions.send(permission_name).map(&:provider_id) %>
+      <% if permitted_provider_ids&.include?(provider.id) %>
+        <li><%= permission_name.to_s.humanize %></li>
+      <% else %>
+        <li>No permissions</li>
+      <% end %>
     <% end %>
   </ul>
 <% end %>
