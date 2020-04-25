@@ -6,7 +6,7 @@ class HealthCheckWorker
   def perform
     Rails.logger.info 'perform HealthCheckWorker'
 
-    @health_check_url = ENV['APP_MONITORING_ENDPOINT']
+    @health_check_url = ENV.fetch('APP_MONITORING_ENDPOINT')
 
     if @health_check_url.blank?
       Rails.logger.info 'health_check_url not present'
