@@ -6,15 +6,15 @@ class HealthCheckWorker
   def perform
     Rails.logger.info 'perform HealthCheckWorker'
 
-    @healthCheckUrl = ENV['APP_MONITORING_ENDPOINT']
+    @health_check_url = ENV['APP_MONITORING_ENDPOINT']
 
-    unless @healthCheckUrl.present?
-      Rails.logger.info '@healthCheckUrl not present'
-      raise '@healthCheckUrl not present'
+    unless @health_check_url.present?
+      Rails.logger.info 'health_check_url not present'
+      raise 'health_check_url not present'
     end
-    
-    Rails.logger.info "APP_MONITORING_ENDPOINT  #{@healthCheckUrl}"
-    response = HTTP.get(@healthCheckUrl)
+ 
+    Rails.logger.info "APP_MONITORING_ENDPOINT  #{@health_check_url}"
+    response = HTTP.get(@health_check_url)
     Rails.logger.info 'Application is running...' if response.status.success?
   end
 end
