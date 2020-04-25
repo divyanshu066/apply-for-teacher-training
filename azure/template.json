@@ -392,6 +392,8 @@
         "resourceNamePrefix": "[toLower(concat(parameters('subscriptionPrefix'), parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
         "appServicePlanName": "[concat(variables('resourceNamePrefix'), '-asp')]",
+        "appServiceUrl": "[concat('https://', variables('appServiceName'), '.azurewebsites.net/')]",
+        "appMonitoringEndpoint": "[concat(variables('appServiceUrl'), 'integrations/monitoring/all')]",
         "storageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'str'), '-', '')]",
         "databaseServerName": "[concat(variables('resourceNamePrefix'), '-psql')]",
         "keyVaultCertificateName": "[replace(parameters('customHostName'), '.', '-')]",
@@ -729,6 +731,10 @@
                             {
                                 "name": "SANDBOX",
                                 "value": "[parameters('sandbox')]"
+                            },
+                            {
+                                "name": "APP_MONITORING_ENDPOINT",
+                                "value": "[variables('appMonitoringEndpoint')]"
                             }
                         ]
                     }
