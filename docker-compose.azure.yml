@@ -24,3 +24,4 @@ services:
       - DSI_API_URL
       - DSI_API_SECRET
       - SANDBOX
+      - APP_MONITORING_ENDPOINT
