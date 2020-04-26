@@ -15,6 +15,7 @@ class HealthCheckWorker
 
     Rails.logger.info "APP_MONITORING_ENDPOINT  #{@health_check_url}"
     response = HTTP.get(@health_check_url)
+    Rails.logger.info "HealthCheckResponseCode #{response.status}"
     Rails.logger.info 'Application is running...' if response.status.success?
   end
 end
