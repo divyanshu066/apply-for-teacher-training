@@ -32,4 +32,20 @@ RSpec.describe ProviderPermissionsOptions, type: :model do
       expect(result.manage_users).to eq([provider.id])
     end
   end
+
+  describe '#for_provider' do
+    let(:provider) { build_stubbed(:provider, id: 2) }
+    let(:permissions) { described_class.new(manage_users: [2]) }
+
+    it 'returns permission names enabled for the provider' do
+      expect(permissions.for_provider(provider)).to eq(%i[manage_users])
+    end
+
+    context 'with no active permissions' do
+      it 'returns an empty array' do
+        another_provider = build_stubbed(:provider, id: 100)
+        expect(permissions.for_provider(another_provider)).to eq([])
+      end
+    end
+  end
 end

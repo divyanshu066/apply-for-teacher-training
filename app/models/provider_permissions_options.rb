@@ -5,6 +5,11 @@ class ProviderPermissionsOptions
 
   attr_accessor(*VALID_PERMISSIONS)
 
+  def initialize(permissions_attributes = {})
+    super(permissions_attributes)
+    @permissions_attributes = permissions_attributes
+  end
+
   def self.valid?(permission_name)
     VALID_PERMISSIONS.include?(permission_name.to_sym)
   end
@@ -19,5 +24,9 @@ class ProviderPermissionsOptions
     end
 
     new(permissions_attributes)
+  end
+
+  def for_provider(provider)
+    @permissions_attributes.select { |_, provider_ids| provider_ids.include?(provider.id) }.keys
   end
 end
