@@ -20,7 +20,7 @@ class HealthCheckWorker
       Rails.logger.info 'Application is running...'
     else
       Rails.logger.info "Health check failed with status #{response.status}"
-      raise "Application monitoring health check failed in #{ENV.fetch(HOSTING_ENVIRONMENT_NAME)}!"
+      raise "Application monitoring health check failed in #{ENV.fetch('HOSTING_ENVIRONMENT_NAME')}!"
     end
   end
 end
