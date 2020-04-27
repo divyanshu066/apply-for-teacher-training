@@ -91,10 +91,7 @@ RSpec.feature 'Managing provider user permissions' do
 
   def then_i_cant_see_the_permission_for_the_provider_user
     expect(page).to have_content 'Providers updated'
-
-    within("#provider-#{@provider.id}-enabled-permissions") do
-      expect(page).not_to have_content 'Manage users'
-    end
+    expect(page).not_to have_content 'Manage users'
 
     expect(@provider.provider_users.first.provider_permissions.first.manage_users).to be false
   end

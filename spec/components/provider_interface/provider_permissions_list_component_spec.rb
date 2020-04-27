@@ -1,49 +1,32 @@
 require 'rails_helper'
 
 RSpec.describe ProviderInterface::ProviderPermissionsListComponent do
-  before do
-    @provider = create(:provider, name: 'Hoth University')
-    @provider_user = create(:provider_user, providers: [@provider])
-  end
+  let(:provider_user) { build_stubbed(:provider_user) }
+  let(:permissions) { ProviderPermissionsOptions.new(manage_users: [1, 3]) }
+  let(:providers) {
+    [
+      build_stubbed(:provider, id: 1),
+      build_stubbed(:provider, id: 2),
+      build_stubbed(:provider, id: 3),
+    ]
+  }
 
-  it 'renders no permissions if a provider has no permissions' do
-    @provider_user.provider_permissions.find_by(provider: @provider).update(manage_users: false)
+  it 'renders the correct permissions per provider' do
+    allow(provider_user).to receive(:providers).and_return(providers)
 
-    result = render_inline described_class.new(provider_user: @provider_user, permissions: @provider_user.provider_permissions)
+    result = render_inline(
+      described_class.new(
+        provider_user: provider_user,
+        permissions: permissions,
+      ),
+    )
 
-    expect(result.text).to include('No permissions')
-  end
+    expect(result.text).to include(providers.first.name)
+    expect(result.css('#provider-1-enabled-permissions').text).to include('Manage users')
+    expect(result.text).to include(providers.last.name)
+    expect(result.css('#provider-3-enabled-permissions').text).to include('Manage users')
 
-  it 'renders the correct permissions for a provider it has permissions with' do
-    @provider_user.provider_permissions.find_by(provider: @provider).update(manage_users: true)
-
-    result = render_inline described_class.new(provider_user: @provider_user, permissions: @provider_user.provider_permissions)
-
-    expect(result.text).to include('Manage users')
-  end
-
-  context 'when a provider user has more than one provider' do
-    before do
-      @provider = create(:provider, name: 'Naboo University')
-      @provider_two = create(:provider, name: 'Hoth University')
-      @provider_user = create(:provider_user, providers: [@provider, @provider_two])
-
-      @provider_user.provider_permissions.find_by(provider: @provider).update(manage_users: false)
-      @provider_user.provider_permissions.find_by(provider: @provider_two).update(manage_users: true)
-    end
-
-    it 'renders the correct permissions for the provider it has permissions with' do
-      result = render_inline described_class.new(provider_user: @provider_user, permissions: @provider_user.provider_permissions)
-
-      expect(result.text).to include('Naboo University')
-      expect(result.text).to include('Manage users')
-    end
-
-    it 'renders "No permissions" for the provider it has no permissions with' do
-      result = render_inline described_class.new(provider_user: @provider_user, permissions: @provider_user.provider_permissions)
-
-      expect(result.text).to include('Hoth University')
-      expect(result.text).to include('No permissions')
-    end
+    expect(result.text).not_to include(providers.second.name)
+    expect(result.to_html).not_to include('#provider-2-enabled-permissions')
   end
 end
