@@ -1,5 +1,5 @@
 module ProviderInterface
-  class ProviderUserDetailsComponent < ActionView::Component::Base
+  class ProviderUserDetailsComponent < ViewComponent::Base
     include ViewHelper
     attr_reader :header
 

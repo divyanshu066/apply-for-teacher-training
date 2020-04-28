@@ -1,5 +1,5 @@
 module ProviderInterface
-  class ProviderPermissionsListComponent < ActionView::Component::Base
+  class ProviderPermissionsListComponent < ViewComponent::Base
     include ViewHelper
     attr_reader :provider_user, :permissions
 
