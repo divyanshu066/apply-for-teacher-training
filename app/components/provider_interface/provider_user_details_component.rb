@@ -22,7 +22,6 @@ module ProviderInterface
         key: 'Permissions',
         value: render(
           ProviderInterface::ProviderPermissionsListComponent.new(
-            provider_user: @provider_user,
             permissions: @permissions,
           ),
         ),

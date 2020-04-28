@@ -1,11 +1,8 @@
-<% provider_user.providers.each do |provider| %>
-  <% permissions_for_provider = permissions.for_provider(provider) %>
-  <% if permissions_for_provider.any? %>
-    <h4><%= provider.name %></h4>
-    <ul id="provider-<%= provider.id %>-enabled-permissions">
-      <% permissions_for_provider.each do |permission_name| %>
-        <li><%= permission_name.to_s.humanize %></li>
-      <% end %>
-    </ul>
-  <% end %>
+<% permissions.each do |permission| %>
+  <h4><%= permission.provider.name %></h4>
+  <ul id="provider-<%= permission.provider.id %>-enabled-permissions">
+    <% permission.permissions.each do |permission_name| %>
+      <li><%= permission_name.to_s.humanize %></li>
+    <% end %>
+  </ul>
 <% end %>
