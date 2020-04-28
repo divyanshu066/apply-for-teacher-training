@@ -8,8 +8,12 @@ module ProviderInterface
     end
 
     def show
-      @provider_user = ProviderUser.find_by(id: params[:id])
-      @permissions = ProviderPermissionsOptions.for_provider_user(@provider_user)
+      @provider_user = ProviderUser.visible_to(current_provider_user).find_by(id: params[:id])
+      if @provider_user
+        @permissions = ProviderPermissionsOptions.for_provider_user(@provider_user)
+      else
+        redirect_to action: :index
+      end
     end
 
     def new
