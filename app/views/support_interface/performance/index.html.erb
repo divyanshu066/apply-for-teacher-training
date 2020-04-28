@@ -6,6 +6,7 @@
   <li><%= govuk_link_to 'Performance dashboard', integrations_performance_path %> (public)</li>
   <li><%= govuk_link_to 'Course options without vacancies', support_interface_course_options_path %></li>
   <li><%= govuk_link_to 'Applications that require action', support_interface_action_required_path %></li>
+  <li><%= govuk_link_to 'Validation errors', support_interface_validation_errors_path %></li>
 </ul>
 
 <h2 class='govuk-heading-l'>Downloads for analysis</h2>
@@ -63,18 +64,20 @@
   <%= govuk_link_to 'Download candidate survey results (CSV)', support_interface_candidate_survey_path %>
 </p>
 
-<h3 class='govuk-heading-m'>Applications export for UCAS</h3>
+<%- if FeatureFlag.active?('download_dataset1_from_support_page') %>
+  <h3 class='govuk-heading-m'>Applications export for UCAS</h3>
 
-<p class='govuk-body'>
-  This generates a list of all submitted applications and choices in the form
-  defined as 'Dataset 1' in the Data Sharing Agreement between
-  DfE and UCAS. UCAS use this file to detect candidates who have submitted
-  duplicate applications via their site.
-</p>
+  <p class='govuk-body'>
+    This generates a list of all submitted applications and choices in the form
+    defined as 'Dataset 1' in the Data Sharing Agreement between
+    DfE and UCAS. UCAS use this file to detect candidates who have submitted
+    duplicate applications via their site.
+  </p>
 
-<p class='govuk-body'>
-  <%= govuk_link_to 'Download Dataset 1 (CSV)', support_interface_applications_export_for_ucas_path %>
-</p>
+  <p class='govuk-body'>
+    <%= govuk_link_to 'Download Dataset 1 (CSV)', support_interface_applications_export_for_ucas_path %>
+  </p>
+<%- end %>
 
 <h3 class="govuk-heading-m">Active provider users</h3>
 

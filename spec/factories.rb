@@ -86,6 +86,22 @@ FactoryBot.define do
         }
       end
 
+      trait :with_equality_and_diversity_data do
+        equality_and_diversity {
+          ethnicity = Class.new.extend(EthnicBackgroundHelper).all_combinations.sample
+          all_disabilities = CandidateInterface::EqualityAndDiversity::DisabilitiesForm::DISABILITIES.map(&:first) << 'Other'
+          disabilities = all_disabilities.sample([*1..3].sample)
+          {
+            sex: ['male', 'female', 'intersex', 'Prefer not to say'].sample,
+            ethnic_group: ethnicity.first,
+            ethnic_background: ethnicity.last,
+            disability_status: 'yes',
+            disabilities: disabilities,
+            other_disability: (disabilities.include?('Other') ? Faker::Lorem.paragraph(sentence_count: 2) : nil),
+          }
+        }
+      end
+
       after(:build) do |application_form, evaluator|
         if evaluator.with_gces
           create(:gcse_qualification, application_form: application_form, subject: 'maths')
@@ -360,7 +376,7 @@ FactoryBot.define do
     end
   end
 
-  factory :vendor_api_user do
+  factory :vendor_api_user, class: 'VendorApiUser' do
     vendor_api_token
 
     full_name { 'Bob' }
@@ -374,7 +390,7 @@ FactoryBot.define do
     hashed_token { '1234567890' }
 
     trait :with_random_token do
-      hashed_token { _unhashed_token, hashed_token = Devise.token_generator.generate(VendorApiToken, :hashed_token); hashed_token }
+      hashed_token { _unhashed_token, hashed_token = Devise.token_generator.generate(VendorAPIToken, :hashed_token); hashed_token }
     end
   end
 
@@ -465,5 +481,12 @@ FactoryBot.define do
   factory :provider_permissions do
     provider
     provider_user
+  end
+
+  factory :validation_error do
+    form_object { 'RefereeInterface::ReferenceFeedbackForm' }
+    details { { feedback: { messages: ['Enter feedback'], value: '' } } }
+    association :user, factory: :candidate
+    request_path { '/candidate' }
   end
 end

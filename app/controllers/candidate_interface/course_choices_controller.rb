@@ -84,7 +84,7 @@ module CandidateInterface
 
       if !@pick_course.open_on_apply?
         redirect_to candidate_interface_course_choices_ucas_with_course_path(@pick_course.provider_id, @pick_course.course_id)
-      elsif @pick_course.full? && FeatureFlag.active?('check_full_courses')
+      elsif @pick_course.full?
         redirect_to candidate_interface_course_choices_full_path(
           @pick_course.provider_id,
           @pick_course.course_id,
@@ -255,6 +255,7 @@ module CandidateInterface
         redirect_to candidate_interface_application_form_path
       else
         @course_choices = current_candidate.current_application.application_choices
+        track_validation_error(@application_form)
 
         render :review
       end
@@ -291,7 +292,7 @@ module CandidateInterface
         @course_choices = current_candidate.current_application.application_choices
         flash[:success] = "You’ve added #{@course_choices.last.course.name_and_code} to your application"
 
-        if @course_choices.count.between?(1, 2) && FeatureFlag.active?('add_additional_courses_page')
+        if @course_choices.count.between?(1, 2)
           redirect_to candidate_interface_course_choices_add_another_course_path
         else
           redirect_to candidate_interface_course_choices_index_path

@@ -8,6 +8,7 @@ RSpec.feature 'Candidate submits the application' do
     and_the_covid_19_feature_flag_is_on
 
     when_i_have_completed_my_application
+
     and_i_review_my_application
 
     then_i_should_see_all_sections_are_complete
@@ -127,7 +128,7 @@ RSpec.feature 'Candidate submits the application' do
   end
 
   def and_i_can_see_my_other_qualification
-    expect(page).to have_content 'A-Level Believing in the Heart of the Cards'
+    expect(page).to have_content 'A level Believing in the Heart of the Cards'
     expect(page).to have_content 'Yugi College'
     expect(page).to have_content 'A'
     expect(page).to have_content '2015'
@@ -160,7 +161,7 @@ RSpec.feature 'Candidate submits the application' do
   end
 
   def when_i_click_on_check_your_answers
-    click_link 'Check your answers before submitting'
+    click_link 'Check and submit your application'
   end
 
   def and_i_confirm_my_application
@@ -244,7 +245,7 @@ RSpec.feature 'Candidate submits the application' do
     expect(page).to have_content '07700 900 982'
     expect(page).to have_content 'Classroom Volunteer'
     expect(page).to have_content 'BA Doge'
-    expect(page).to have_content 'A-Level Believing in the Heart of the Cards'
+    expect(page).to have_content 'A level Believing in the Heart of the Cards'
     expect(page).to have_content 'I believe I would be a first-rate teacher'
     expect(page).to have_content 'Everything'
     expect(page).to have_content 'Not on a Wednesday'

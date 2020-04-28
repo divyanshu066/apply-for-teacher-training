@@ -58,7 +58,7 @@ RSpec.feature 'Vendor receives the application' do
   end
 
   def when_i_retrieve_the_application_over_the_api
-    api_token = VendorApiToken.create_with_random_token!(provider: @provider)
+    api_token = VendorAPIToken.create_with_random_token!(provider: @provider)
     page.driver.header 'Authorization', "Bearer #{api_token}"
 
     visit '/api/v1/applications?since=2019-01-01'
@@ -141,7 +141,7 @@ RSpec.feature 'Vendor receives the application' do
          other_qualifications: [
            {
               id: @application.qualification_in_subject(:other, 'Believing in the Heart of the Cards').id,
-              qualification_type: 'A-Level',
+              qualification_type: 'A level',
               subject: 'Believing in the Heart of the Cards',
               grade: 'A',
               award_year: '2015',

@@ -8,27 +8,23 @@ class FeatureFlag
   ].freeze
 
   TEMPORARY_FEATURE_FLAGS = %w[
-    add_additional_courses_page
-    before_you_start
     candidate_can_cancel_reference
-    check_full_courses
     confirm_conditions
-    create_account_or_sign_in_page
+    download_dataset1_from_support_page
     edit_course_choices
     equality_and_diversity
-    group_providers_by_region
     notes
-    prompt_for_additional_qualifications
     provider_add_provider_users
     provider_application_filters
     provider_change_response
     provider_interface_work_breaks
     provider_view_safeguarding
-    satisfaction_survey
     suitability_to_work_with_children
+    support_sign_in_confirmation_email
     timeline
     unavailable_course_option_warnings
     work_breaks
+    track_validation_errors
   ].freeze
 
   FEATURES = (PERMANENT_SETTINGS + TEMPORARY_FEATURE_FLAGS).freeze

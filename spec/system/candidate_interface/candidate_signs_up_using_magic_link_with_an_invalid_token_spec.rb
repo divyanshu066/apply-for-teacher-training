@@ -4,7 +4,6 @@ RSpec.feature 'Candidate tries to sign up using magic link with an invalid token
   scenario 'Candidate signs in and receives an email inviting them to sign up' do
     given_the_pilot_is_open
     and_the_covid_19_feature_flag_is_active
-    and_the_create_account_or_sign_in_page_feature_flag_is_active
 
     given_i_am_a_candidate_without_an_account
 
@@ -21,13 +20,12 @@ RSpec.feature 'Candidate tries to sign up using magic link with an invalid token
     when_i_click_the_button_to_send_me_a_sign_in_email
     then_i_receive_an_email_inviting_me_to_sign_in
     and_i_click_on_the_link_in_my_email
-    then_i_am_taken_to_the_sign_up_page
+    then_i_see_the_before_you_start_page
     and_i_should_see_an_account_created_flash_message
     and_i_should_not_see_the_covid19_banner
 
-    when_i_click_on_course_choices
-    and_click_on_the_apply_for_teacher_training_link_in_the_header
-    then_i_see_the_application_form_page
+    when_click_on_the_apply_for_teacher_training_link_in_the_header
+    then_i_should_see_the_application_page
   end
 
 
@@ -37,10 +35,6 @@ RSpec.feature 'Candidate tries to sign up using magic link with an invalid token
 
   def and_the_covid_19_feature_flag_is_active
     FeatureFlag.activate('covid_19')
-  end
-
-  def and_the_create_account_or_sign_in_page_feature_flag_is_active
-    FeatureFlag.activate('create_account_or_sign_in_page')
   end
 
   def given_i_am_a_candidate_without_an_account
@@ -103,8 +97,8 @@ RSpec.feature 'Candidate tries to sign up using magic link with an invalid token
     expect(current_email.subject).to have_content t('authentication.sign_in.email.subject')
   end
 
-  def then_i_am_taken_to_the_sign_up_page
-    expect(page).to have_current_path(candidate_interface_application_form_path)
+  def then_i_see_the_before_you_start_page
+    expect(page).to have_current_path(candidate_interface_before_you_start_path)
   end
 
   def and_i_should_see_an_account_created_flash_message
@@ -115,15 +109,11 @@ RSpec.feature 'Candidate tries to sign up using magic link with an invalid token
     expect(page).not_to have_content 'There might be a delay in processing your application due to the impact of coronavirus (COVID-19)'
   end
 
-  def when_i_click_on_course_choices
-    click_link 'Course choices'
-  end
-
-  def and_click_on_the_apply_for_teacher_training_link_in_the_header
+  def when_click_on_the_apply_for_teacher_training_link_in_the_header
     click_link 'Apply for teacher training'
   end
 
-  def then_i_see_the_application_form_page
+  def then_i_should_see_the_application_page
     expect(page).to have_current_path(candidate_interface_application_form_path)
   end
 end

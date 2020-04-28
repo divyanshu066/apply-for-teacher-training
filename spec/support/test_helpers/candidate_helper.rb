@@ -79,7 +79,7 @@ module CandidateHelper
   end
 
   def candidate_submits_application
-    click_link 'Check your answers before submitting'
+    click_link 'Check and submit your application'
     click_link 'Continue'
     choose 'No' # "Is there anything else you would like to tell us?"
 
@@ -110,12 +110,8 @@ module CandidateHelper
     choose 'Primary (2XT2)'
     click_button 'Continue'
 
-    if FeatureFlag.active?('add_additional_courses_page')
-      choose 'No, not at the moment'
-      click_button 'Continue'
-
-      click_on 'Course choices'
-    end
+    choose 'No, not at the moment'
+    click_button 'Continue'
 
     check t('application_form.courses.complete.completed_checkbox')
     click_button 'Continue'
@@ -173,12 +169,13 @@ module CandidateHelper
   end
 
   def candidate_fills_in_their_other_qualifications
-    fill_in t('application_form.other_qualification.qualification_type.label'), with: 'A-Level'
+    choose 'A level'
+    click_button 'Continue'
     fill_in t('application_form.other_qualification.subject.label'), with: 'Believing in the Heart of the Cards'
     fill_in t('application_form.other_qualification.institution_name.label'), with: 'Yugi College'
     fill_in t('application_form.other_qualification.grade.label'), with: 'A'
     fill_in t('application_form.other_qualification.award_year.label'), with: '2015'
-
+    choose 'No, not right now'
     click_button t('application_form.other_qualification.base.button')
     check t('application_form.other_qualification.review.completed_checkbox')
     click_button t('application_form.other_qualification.review.button')

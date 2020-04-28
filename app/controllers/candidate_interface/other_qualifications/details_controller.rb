@@ -20,7 +20,7 @@ module CandidateInterface
       @qualification = OtherQualificationForm.new(other_qualification_params)
 
       if @qualification.valid?
-        @qualification.save(current_application)
+        @qualification.save
 
         if @qualification.choice == 'same_type'
           qualification = ApplicationQualification.find(params[:id])
@@ -40,6 +40,7 @@ module CandidateInterface
       else
         qualifications = OtherQualificationForm.build_all_from_application(current_application)
         @type = qualifications.last.qualification_type
+        track_validation_error(@qualification)
 
         render :new
       end
