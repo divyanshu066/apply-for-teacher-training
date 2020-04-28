@@ -48,17 +48,18 @@ module ProviderInterface
 
     def edit_providers
       provider_user = ProviderUser.find(params[:provider_user_id])
-      @form = ProviderUserForm.from_provider_user(provider_user)
-      @form.current_provider_user = current_provider_user
+      @form = EditProviderUserForm.new(provider_user: provider_user, editing_user: current_provider_user)
     end
 
     def update_providers
       provider_user = ProviderUser.find(params[:provider_user_id])
-      provider_user.assign_attributes(provider_user_params.except(:permissions))
-      @form = ProviderUserForm.from_provider_user(provider_user)
-      service = SaveProviderUser.new(provider_user: provider_user, permissions: permissions_params)
+      @form = EditProviderUserForm.new(
+        provider_user: provider_user,
+        editing_user: current_provider_user,
+        provider_permissions: provider_permissions_params.to_h,
+      )
 
-      render :edit_providers and return unless service.call!
+      @form.save!
 
       flash[:success] = 'Providers updated'
       redirect_to provider_interface_provider_user_path(provider_user)
@@ -66,13 +67,8 @@ module ProviderInterface
 
   private
 
-    def provider_user_params
-      params.require(:provider_interface_provider_user_form)
-            .permit(:email_address, :first_name, :last_name, provider_ids: [], permissions: {})
-    end
-
-    def permissions_params
-      provider_user_params.fetch(:permissions, {})
+    def provider_permissions_params
+      params.require(:provider_interface_edit_provider_user_form).permit(provider_permissions: [:provider_id]).fetch(:provider_permissions, [])
     end
 
     def requires_provider_add_provider_users_feature_flag

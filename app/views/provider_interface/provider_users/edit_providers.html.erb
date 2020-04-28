@@ -7,21 +7,15 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_with model: @form, url: provider_interface_provider_user_update_providers_path do |f| %>
+    <%= form_with model: @form, method: :patch, url: provider_interface_provider_user_update_providers_path do |f| %>
       <%= f.govuk_error_summary %>
 
-      <%= f.govuk_check_boxes_fieldset :provider, legend: { text: 'Provider' } do %>
-        <div class="app-checkboxes-scroll">
-          <% f.object.available_providers.each do |provider| %>
-            <%= f.govuk_check_box :provider_ids, provider.id, label: { text: provider.name_and_code } do %>
-              <%= f.fields_for :permissions, f.object.permissions  do |pm| %>
-                <%= pm.govuk_check_boxes_fieldset :permissions, legend: { text: 'Choose permissions', size: 's' } do %>
-                  <%= pm.govuk_check_box :manage_users, provider.id, label: { text: 'Manage users' } %>
-                <% end %>
-              <% end %>
-            <% end %>
-          <% end %>
-        </div>
+      <%= f.hidden_field :_submitted %>
+
+      <% f.object.possible_permissions.each do |permission| %>
+        <%= f.fields_for "provider_permissions[]", permission do |pf| %>
+          <%= pf.govuk_check_box :provider_id, permission.provider_id, multiple: false, label: { text: permission.provider.name } %>
+        <% end %>
       <% end %>
 
       <%= f.govuk_submit 'Update providers' %>

@@ -99,4 +99,4 @@ RSpec.feature 'Managing provider user permissions' do
   def permissions_fields_id_for_provider(provider)
     "#provider-interface-provider-user-form-provider-ids-#{provider.id}-conditional"
   end
-end
+ end
