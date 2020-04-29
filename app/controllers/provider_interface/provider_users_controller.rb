@@ -68,7 +68,7 @@ module ProviderInterface
   private
 
     def provider_permissions_params
-      params.require(:provider_interface_edit_provider_user_form).permit(provider_permissions: [:provider_id]).fetch(:provider_permissions, [])
+      params.require(:provider_interface_edit_provider_user_form).permit(provider_permissions_forms: {}).fetch(:provider_permissions_forms, {})
     end
 
     def requires_provider_add_provider_users_feature_flag

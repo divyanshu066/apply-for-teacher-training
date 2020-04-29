@@ -12,9 +12,12 @@
 
       <%= f.hidden_field :_submitted %>
 
-      <% f.object.possible_permissions.each do |permission| %>
-        <%= f.fields_for "provider_permissions[]", permission do |pf| %>
-          <%= pf.govuk_check_box :provider_id, permission.provider_id, multiple: false, label: { text: permission.provider.name } %>
+      <% f.object.forms_for_possible_permissions.each do |permission_form| %>
+        <%= f.fields_for "provider_permissions_forms[]", permission_form do |pf| %>
+          <%= pf.govuk_check_box :active, true, multiple: false, label: { text: permission_form.provider.name }  %>
+          <%= pf.fields_for :provider_permission, permission_form.provider_permission do |ppf| %>
+            <%= ppf.hidden_field :provider_id %>
+          <% end %>
         <% end %>
       <% end %>
 
