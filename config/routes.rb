@@ -432,6 +432,7 @@ Rails.application.routes.draw do
     patch '/applications/:application_choice_id/conditions' => 'conditions#update', as: :application_choice_update_conditions
     get '/applications/:application_choice_id/offer/change/provider' => 'offer_changes#edit_provider', as: :application_choice_change_offer_edit_provider
     get '/applications/:application_choice_id/offer/change/course' => 'offer_changes#edit_course', as: :application_choice_change_offer_edit_course
+    get '/applications/:application_choice_id/offer/change/study_mode' => 'offer_changes#edit_study_mode', as: :application_choice_change_offer_edit_study_mode
     get '/applications/:application_choice_id/offer/change/location' => 'offer_changes#edit_course_option', as: :application_choice_change_offer_edit_course_option
     get '/applications/:application_choice_id/offer/change/confirm' => 'offer_changes#confirm_update', as: :application_choice_change_offer_confirmation
     patch '/applications/:application_choice_id/offer/change' => 'offer_changes#update', as: :application_choice_change_offer

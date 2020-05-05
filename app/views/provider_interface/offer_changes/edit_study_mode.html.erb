@@ -3,7 +3,7 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= form_with model: @change_offer_form,
-          url: provider_interface_application_choice_change_offer_edit_study_mode_path(@application_choice.id),
+          url: provider_interface_application_choice_change_offer_edit_course_option_path(@application_choice.id),
           method: :get do |f| %>
 
       <%= f.hidden_field :provider_id %>
@@ -17,8 +17,8 @@
           </h1>
         </legend>
 
-        <% @alternative_courses.each do |course| %>
-          <%= f.govuk_radio_button :course_id, course.id, label: { text: course.name_and_code }, hint_text: course.description %>
+        <% @alternative_study_modes.each do |study_mode| %>
+          <%= f.govuk_radio_button :study_mode, study_mode, label: { text: study_mode } %>
         <% end %>
       <% end %>
 

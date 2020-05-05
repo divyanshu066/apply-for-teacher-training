@@ -20,6 +20,16 @@ module ProviderInterface
       end
     end
 
+    def edit_study_mode
+      @change_offer_form.step = :study_mode
+
+      if @change_offer_form.valid?
+        render_study_modes
+      else
+        render_courses
+      end
+    end
+
     def edit_course_option
       @change_offer_form.step = :course_option
 
@@ -100,6 +110,16 @@ module ProviderInterface
         end
 
       render :edit_course
+    end
+
+    def render_study_modes
+      set_alternative_study_modes
+      @page_title = \
+        if @application_choice.offer? && @change_offer_form.entry == 'study_mode'
+          'Change study mode'
+        else
+          'Select study mode'
+        end
     end
 
     def render_course_options
@@ -199,6 +219,11 @@ module ProviderInterface
         provider: provider,
         study_mode: study_mode_for_alternative_courses,
       ).order(:name)
+    end
+
+    def set_alternative_study_modes
+      @alternative_study_modes = ['Full-time', 'Part-time']
+      # FIXME
     end
 
     def set_alternative_course_options

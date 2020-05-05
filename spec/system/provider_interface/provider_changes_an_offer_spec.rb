@@ -20,11 +20,13 @@ RSpec.feature 'Provider changes an offer' do
     when_i_click_on_continue
     then_i_see_all_courses_for_this_provider
     and_i_can_change_the_course
-    and_i_see_all_available_locations_for_this_course
+    and_i_see_all_study_modes_for_this_course
+    and_i_can_change_the_study_mode
+    and_i_see_all_available_locations_for_this_course_and_study_mode
     and_i_can_change_the_location
 
     when_i_inspect_and_confirm_these_changes
-    then_the_offer_has_new_course_and_location_details
+    then_the_offer_has_new_course_study_mode_and_location_details
 
     given_i_am_the_candidate_of_the_changed_offer
     then_i_receive_an_email_about_the_changed_offer
@@ -89,7 +91,19 @@ RSpec.feature 'Provider changes an offer' do
     click_on 'Continue'
   end
 
-  def and_i_see_all_available_locations_for_this_course
+  def and_i_see_all_study_modes_for_this_course
+    expect(page).to have_content 'Full-time'
+    expect(page).to have_content 'Part-time'
+  end
+
+  def and_i_can_change_the_study_mode
+    # FIXME
+    # choose @course_option_three.site.name
+    click_on 'Continue'
+  end
+
+  def and_i_see_all_available_locations_for_this_course_and_study_mode
+    # FIXME
     @course_option_two.course.course_options.each do |course_option|
       expect(page).to have_content course_option.site.name
     end
