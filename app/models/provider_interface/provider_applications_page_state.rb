@@ -80,6 +80,7 @@ module ProviderInterface
       input_config = ProviderOptionsService.new(provider_user).providers.map do |provider|
         {
           type: 'checkbox',
+          name: :provider,
           text: provider.name,
           name: provider.id.to_s,
         }

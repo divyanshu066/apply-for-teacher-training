@@ -21,9 +21,7 @@
 
 <div class='moj-filter-layout'>
   <%= render ProviderInterface::FilterComponent.new(
-    available_filters: @page_state.available_filters,
-    applied_filters: @page_state.filter_selections,
-    params_for_current_state: @page_state.to_h,
+    page_state: @page_state,
   ) %>
   <div class='moj-filter-layout__content'>
     <% if @application_choices.any? %>
