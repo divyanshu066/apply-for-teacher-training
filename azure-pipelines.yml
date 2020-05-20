@@ -337,8 +337,8 @@ stages:
 
 - stage: deploy_qa
   displayName: 'Deploy - QA'
-  dependsOn: test_release
-  condition: and(succeeded('test_release'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  dependsOn: build_release
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   variables:
   - group: APPLY - ENV - QA
   jobs:
@@ -393,6 +393,7 @@ stages:
 
 
 - stage: deploy_devops
+  dependsOn: build_release
   displayName: 'Deploy - DevOps'
   condition: eq(variables['Build.SourceBranchName'], variables.devDeployBranchNameOverride)
   variables:
@@ -407,9 +408,9 @@ stages:
       resourceEnvironmentName: 'd02'
       serviceName: 'apply'
       ${{ if eq(variables['deployOnly'], true) }}:
-        containerImageReference: '$(imageName):latest'
+        containerImageReference: '$(dockerHubUsername)/$(imageName):latest'
       ${{ if eq(variables['deployOnly'], false) }}:
-        containerImageReference: '$(imageName):$(build.buildNumber)'
+        containerImageReference: '$(dockerHubUsername)/$(imageName):$(build.buildNumber)'
       keyVaultName: 's106d01-shared-kv-01'
       keyVaultResourceGroup: 's106d01-shared-rg'
       databaseName: 'apply'
