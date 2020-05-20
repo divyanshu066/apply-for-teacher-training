@@ -394,8 +394,7 @@ stages:
 
 - stage: deploy_devops
   displayName: 'Deploy - DevOps'
-  dependsOn: test_release
-  condition: and(succeeded('test_release'), eq(variables['Build.SourceBranchName'], variables.devDeployBranchNameOverride))
+  condition: eq(variables['Build.SourceBranchName'], variables.devDeployBranchNameOverride)
   variables:
   - group: APPLY - ENV - DevOps
   jobs:
