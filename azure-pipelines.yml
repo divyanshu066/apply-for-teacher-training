@@ -352,7 +352,7 @@ stages:
       serviceName: 'apply'
       redisCacheSKU: 'Premium'
       redisCacheFamily: 'P'
-      containerImageReference: '$(imageName):$(build.buildNumber)'
+      containerImageReference: '$(dockerHubUsername)/$(imageName):$(build.buildNumber)'
       keyVaultName: 's106d01-shared-kv-01'
       keyVaultResourceGroup: 's106d01-shared-rg'
       customHostName: '$(govukHostname)'
