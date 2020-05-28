@@ -13,6 +13,7 @@ module CandidateInterface
               presence: true
 
     validates :working_with_children, inclusion: { in: %w[true false] }
+    validates :add_another_job, inclusion: { in: %w[true false] }
 
     validate :start_date_valid
     validate :start_date_before_current_year_and_month, if: :start_date_valid?

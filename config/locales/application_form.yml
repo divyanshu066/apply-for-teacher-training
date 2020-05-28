@@ -495,6 +495,8 @@ en:
               too_many_words: Skills and experience must be %{count} words or fewer
             working_with_children:
               blank: Select if this job involves working in a school or with children
+            add_another_job:
+              inclusion: Select if you want to add another job
             commitment:
               blank: Select if this job is full-time or part-time
             start_date:
