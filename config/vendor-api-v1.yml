@@ -701,6 +701,69 @@ components:
           example: University of Amsterdam
           maxLength: 256
           nullable: true
+    DegreeQualification:
+      allOf:
+      - "$ref": "#/components/schemas/Qualification"
+      - type: object
+        additionalProperties: false
+        required:
+        - hesa_degtype
+        - hesa_degsbj
+        - hesa_degest
+        - hesa_degclss
+        - hesa_firstdeg
+        - hesa_degestdt
+        - hesa_degenddt
+        properties:
+          hesa_degtype:
+            nullable: true
+            type: string
+            description: https://www.hesa.ac.uk/collection/c19053/e/degtype
+            example: "001"
+            minLength: 3
+            maxLength: 3
+          hesa_degsbj:
+            nullable: true
+            type: array
+            description: https://www.hesa.ac.uk/collection/c19053/e/degsbj
+            minItems: 0
+            maxItems: 1
+            items:
+              type: string
+              minLength: 6
+              maxLength: 6
+              example: "100035"
+          hesa_degest:
+            nullable: true
+            type: string
+            description: https://www.hesa.ac.uk/collection/c19053/e/degest
+            example: "0001"
+            minLength: 4
+            maxLength: 4
+          hesa_degclss:
+            nullable: true
+            type: string
+            description: https://www.hesa.ac.uk/collection/c19053/e/degclss
+            example: "01"
+            minLength: 2
+            maxLength: 2
+          hesa_firstdeg:
+            nullable: false
+            type: string
+            description: https://www.hesa.ac.uk/collection/c19053/e/firstdeg
+            example: "01"
+            minLength: 2
+            maxLength: 2
+          hesa_degstdt:
+            nullable: true
+            type: string
+            format: date
+            description: https://www.hesa.ac.uk/collection/c19053/e/degstdt
+          hesa_degenddt:
+            nullable: true
+            type: string
+            format: date
+            description: https://www.hesa.ac.uk/collection/c19053/e/degenddt
     Reference:
       type: object
       additionalProperties: false
