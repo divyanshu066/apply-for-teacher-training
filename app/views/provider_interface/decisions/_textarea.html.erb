@@ -1,0 +1,17 @@
+<% answers.each do |answer| %>
+  <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="300">
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="rejection-missing-qualifications-reasons-other">
+        <%= answer.label %>
+      </label>
+
+      <textarea class="govuk-textarea govuk-js-character-count"
+                id="rejection-missing-qualifications-reasons-other"
+                name="rejectionReasons[missing-qualifications-reasons-other]"
+                rows="5"
+                aria-describedby="rejection-missing-qualifications-reasons-other-info">
+      </textarea>
+      <span id="rejection-missing-qualifications-reasons-other-info" class="govuk-hint govuk-character-count__message" aria-live="polite">You have 300 characters remaining</span>
+    </div>
+  </div>
+<% end %>

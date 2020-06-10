@@ -64,6 +64,7 @@ module ProviderInterface
     end
 
     def new_reject
+      @rejection_reasons_form = ProviderInterface::RejectionReasonsForm.new
       @reject_application = RejectApplication.new(application_choice: @application_choice)
     end
 

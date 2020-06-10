@@ -1,0 +1,40 @@
+---
+questions:
+  - label: Was it due to candidate behaviour?
+    type: question
+    answers:
+    - label: 'Yes'
+      type: radio
+      answers:
+      - label: Didn't reply to our interview offer
+        type: checkbox
+      - label: Didn't attend interview
+        type: checkbox
+      - label: 'Other'
+        type: checkbox
+        answers:
+        - label: Please give details
+          type: textarea
+        - label: What could they do to improve?
+          type: textarea
+    - label: 'No'
+      type: radio
+  - label: Was it due to the quality of their application?
+    type: question
+    answers:
+    - label: 'Yes'
+      type: radio
+      answers:
+      - label: Personal statement
+        type: checkbox
+      - label: Subject knowledge
+        type: checkbox
+      - label: 'Other'
+        type: checkbox
+        answers:
+        - label: Please give details
+          type: textarea
+        - label: What could they do to improve?
+          type: textarea
+    - label: 'No'
+      type: radio

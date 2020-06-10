@@ -1,0 +1,20 @@
+<div class="govuk-form-group">
+  <fieldset class="govuk-fieldset">
+    <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+      <% answers.each do |answer| %>
+        <div class="govuk-checkboxes__item">
+          <input class="govuk-checkboxes__input" id="rejection-actions-reasons" name="rejectionReasons[actions-reasons]" type="checkbox" value="Didn’t reply to our interview offer">
+          <label class="govuk-label govuk-checkboxes__label" for="rejection-actions-reasons">
+            <%= answer.label %>
+          </label>
+        </div>
+
+        <% if answer.answers.any? %>
+          <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-rejection-actions-reasons-3">
+            <%= render answer.answers.first.type, answers: answer.answers %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </fieldset>
+</div>
