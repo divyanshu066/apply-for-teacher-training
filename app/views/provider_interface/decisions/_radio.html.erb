@@ -1,13 +1,18 @@
 <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
   <% answers.each do |answer| %>
     <div class="govuk-radios__item">
-       <input class="govuk-radios__input" id="rejection-actions" name="what_goes_here" type="radio" value="Yes" aria-controls="conditional-rejection-actions" aria-expanded="true">
-       <label class="govuk-label govuk-radios__label" for="rejection-actions">
+      <input class="govuk-radios__input"
+             id="rejection-<%= answer.id %>"
+             name="<%= answer.field_name %>"
+             type="radio"
+             value="<%= answer.label %>"
+             aria-controls="conditional-rejection-<%= answer.id %>">
+          <label class="govuk-label govuk-radios__label" for="rejection-<%= answer.id %>">
          <%= answer.label %>
        </label>
     </div>
     <% if answer.answers.any? %>
-      <div class="govuk-radios__conditional" id="conditional-rejection-actions">
+      <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-rejection-<%= answer.id %>">
         <%= render answer.answers.first.type, answers: answer.answers %>
       </div>
     <% end %>

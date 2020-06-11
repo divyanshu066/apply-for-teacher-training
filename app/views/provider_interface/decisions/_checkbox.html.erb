@@ -3,14 +3,19 @@
     <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
       <% answers.each do |answer| %>
         <div class="govuk-checkboxes__item">
-          <input class="govuk-checkboxes__input" id="rejection-actions-reasons" name="rejectionReasons[actions-reasons]" type="checkbox" value="Didn’t reply to our interview offer">
-          <label class="govuk-label govuk-checkboxes__label" for="rejection-actions-reasons">
+          <input class="govuk-checkboxes__input"
+                 id="rejection-<%= answer.id %>"
+                 name="<%=answer.field_name %>"
+                 type="checkbox"
+                 <% if answer.answers.any? %>data-aria-controls="conditional-<%= answer.id %>"<% end %>
+                 value="<%= answer.label %>">
+          <label class="govuk-label govuk-checkboxes__label" for="rejection-<%= answer.id %>">
             <%= answer.label %>
           </label>
         </div>
 
         <% if answer.answers.any? %>
-          <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-rejection-actions-reasons-3">
+          <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-<%= answer.id %>">
             <%= render answer.answers.first.type, answers: answer.answers %>
           </div>
         <% end %>
