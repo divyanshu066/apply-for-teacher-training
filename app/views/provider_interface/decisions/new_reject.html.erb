@@ -3,7 +3,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_with model: @reject_application,
+    <%= form_with model: @rejection_reasons_form,
       url: provider_interface_application_choice_confirm_reject_path(@application_choice.id),
       method: :post do |f| %>
 
@@ -12,14 +12,14 @@
       <div class="govuk-form-group">
         <span class="govuk-caption-xl"><%= @application_choice.application_form.full_name %></span>
 
-				<fieldset class="govuk-fieldset">
-        <% @rejection_reasons_form.questions.each do |question| %>
-					<legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-	          <h1 class="govuk-fieldset__heading"><%= question.label %></h1>
-				  </legend>
-          <%= render question.answer_field_type, answers: question.answers %>
+        <% f.object.questions.each do |question| %>
+          <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+              <h1 class="govuk-fieldset__heading"><%= question.label %></h1>
+            </legend>
+            <%= render question.answer_field_type, answers: question.answers %>
+          </fieldset>
         <% end %>
-				</fieldset>
       </div>
 
       <%= f.govuk_submit 'Continue' %>

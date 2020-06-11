@@ -1,17 +1,17 @@
-<% answers.each do |answer| %>
+<% questions.each do |question| %>
   <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="300">
     <div class="govuk-form-group">
-      <label class="govuk-label" for="rejection-<%= answer.id %>">
-        <%= answer.label %>
+      <label class="govuk-label" for="rejection-<%= question.id %>">
+        <%= question.label %>
       </label>
 
       <textarea class="govuk-textarea govuk-js-character-count"
-                id="rejection-<%= answer.id %>"
-                name="<%= answer.field_name %>"
+                id="rejection-<%= question.id %>"
+                name="<%= question.field_name %>"
                 rows="5"
-                aria-describedby="rejection-<%= answer.id %>-info">
+                aria-describedby="rejection-<%= question.id %>-info">
       </textarea>
-      <span id="rejection-<%= answer.id %>-info" class="govuk-hint govuk-character-count__message" aria-live="polite">You have 300 characters remaining</span>
+      <span id="rejection-<%= question.id %>-info" class="govuk-hint govuk-character-count__message" aria-live="polite">You have 300 characters remaining</span>
     </div>
   </div>
 <% end %>

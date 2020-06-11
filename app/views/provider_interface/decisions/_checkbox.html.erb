@@ -1,25 +1,30 @@
-<div class="govuk-form-group">
-  <fieldset class="govuk-fieldset">
-    <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-      <% answers.each do |answer| %>
-        <div class="govuk-checkboxes__item">
-          <input class="govuk-checkboxes__input"
-                 id="rejection-<%= answer.id %>"
-                 name="<%=answer.field_name %>"
-                 type="checkbox"
-                 <% if answer.answers.any? %>data-aria-controls="conditional-<%= answer.id %>"<% end %>
-                 value="<%= answer.label %>">
-          <label class="govuk-label govuk-checkboxes__label" for="rejection-<%= answer.id %>">
-            <%= answer.label %>
-          </label>
-        </div>
-
-        <% if answer.answers.any? %>
-          <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-<%= answer.id %>">
-            <%= render answer.answers.first.type, answers: answer.answers %>
+<% questions.each do |question| %>
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+        <%= question.label %>
+      </legend>
+      <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+        <% question.answers.each do |answer| %>
+          <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input"
+                   id="rejection-<%= answer.id %>"
+                   name="<%= answer.field_name %>"
+                   type="checkbox"
+                   <% if answer.questions.any? %>data-aria-controls="conditional-<%= answer.id %>"<% end %>
+                   value="<%= answer.label %>">
+            <label class="govuk-label govuk-checkboxes__label" for="rejection-<%= answer.id %>">
+              <%= answer.label %>
+            </label>
           </div>
+
+          <% if answer.questions.any? %>
+            <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-<%= answer.id %>">
+              <%= render answer.questions.first.answer_field_type, questions: answer.questions %>
+            </div>
+          <% end %>
         <% end %>
-      <% end %>
-    </div>
-  </fieldset>
-</div>
+      </div>
+    </fieldset>
+  </div>
+<% end %>

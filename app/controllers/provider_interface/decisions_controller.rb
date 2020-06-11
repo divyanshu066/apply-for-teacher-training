@@ -69,6 +69,12 @@ module ProviderInterface
     end
 
     def confirm_reject
+      @rejection_reasons_form = ProviderInterface::RejectionReasonsForm.new
+      @rejection_reasons_form.populate_answers(
+        @rejection_reasons_form.questions,
+        params.require(:rejection_reasons_form).permit!.to_h,
+      )
+
       @reject_application = RejectApplication.new(
         application_choice: @application_choice,
         rejection_reason: params.dig(:reject_application, :rejection_reason),

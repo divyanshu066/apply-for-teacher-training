@@ -5,18 +5,27 @@ questions:
     answers:
     - label: 'Yes'
       type: radio
-      answers:
-      - label: Didn't reply to our interview offer
-        type: checkbox
-      - label: Didn't attend interview
-        type: checkbox
-      - label: 'Other'
-        type: checkbox
+      questions:
+      - label: What did the candidate do?
+        type: question
         answers:
-        - label: Please give details
-          type: textarea
-        - label: What could they do to improve?
-          type: textarea
+        - label: Didn't reply to our interview offer
+          type: checkbox
+        - label: Didn't attend interview
+          type: checkbox
+        - label: 'Other'
+          type: checkbox
+          questions:
+          - label: Please give details
+            type: question
+            answers:
+            - label: ''
+              type: textarea
+          - label: What could they do to improve?
+            type: question
+            answers:
+            - label: ''
+              type: textarea
     - label: 'No'
       type: radio
   - label: Was it due to the quality of their application?
@@ -24,17 +33,26 @@ questions:
     answers:
     - label: 'Yes'
       type: radio
-      answers:
-      - label: Personal statement
-        type: checkbox
-      - label: Subject knowledge
-        type: checkbox
-      - label: 'Other'
-        type: checkbox
+      questions:
+      - label: Which parts of the application needed improvement?
+        type: question
         answers:
-        - label: Please give details
-          type: textarea
-        - label: What could they do to improve?
-          type: textarea
+        - label: Personal statement
+          type: checkbox
+        - label: Subject knowledge
+          type: checkbox
+        - label: 'Other'
+          type: checkbox
+          questions:
+          - label: Please give details
+            type: question
+            answers:
+            - label: ''
+              type: textarea
+          - label: What could they do to improve?
+            type: question
+            answers:
+            - label: ''
+              type: textarea
     - label: 'No'
       type: radio

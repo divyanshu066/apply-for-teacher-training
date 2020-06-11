@@ -11,9 +11,9 @@
          <%= answer.label %>
        </label>
     </div>
-    <% if answer.answers.any? %>
+    <% if answer.questions.any? %>
       <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-rejection-<%= answer.id %>">
-        <%= render answer.answers.first.type, answers: answer.answers %>
+        <%= render answer.questions.first.answer_field_type, questions: answer.questions %>
       </div>
     <% end %>
   <% end %>
