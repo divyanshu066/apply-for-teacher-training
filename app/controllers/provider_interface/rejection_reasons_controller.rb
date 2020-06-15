@@ -10,7 +10,7 @@ module ProviderInterface
       if @reasons_form.valid?
         @reasons_form.next_step!
         if @reasons_form.done?
-          render inline: "<pre>#{params.inspect}</pre>"
+          render inline: "<code>#{params.inspect}</code>"
         else
           render :new
         end
@@ -30,6 +30,7 @@ module ProviderInterface
     attr_accessor :label
     attr_accessor :y_or_n
     attr_accessor :reasons
+    attr_accessor :answered
 
     validates :y_or_n, presence: true
     validate :enough_reasons?, if: -> { y_or_n == 'Y' }
@@ -103,6 +104,11 @@ module ProviderInterface
     attr_writer :questions
     validate :questions_all_valid?
 
+    def initialize(*args)
+      super(*args)
+      assign_answered_questions
+    end
+
     def questions
       @questions || []
     end
@@ -111,14 +117,22 @@ module ProviderInterface
       @answered_questions || []
     end
 
+    def assign_answered_questions
+      @answered_questions, @questions = questions.partition(&:answered)
+    end
+
     def next_step!
       @answered_questions = answered_questions + questions
-      if @answered_questions.count == 0
-        @questions = QUESTIONS.take(2)
-      elsif @answered_questions.count == 2 # or whatever
-        @questions = QUESTIONS.drop(2)
-      else # no further questions
-        @questions.clear
+      @questions = questions_for_current_step
+    end
+
+    def questions_for_current_step
+      if answered_questions.count == 0
+        QUESTIONS.take(2)
+      elsif answered_questions.count == 2
+        QUESTIONS.drop(2)
+      else
+        []
       end
     end
 
