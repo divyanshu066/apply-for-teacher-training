@@ -31,6 +31,7 @@ module ProviderInterface
     attr_accessor :y_or_n
     attr_accessor :reasons
     attr_accessor :answered
+    attr_accessor :additional_question
 
     validates :y_or_n, presence: true
     validate :enough_reasons?, if: -> { y_or_n == 'Y' }
@@ -68,10 +69,16 @@ module ProviderInterface
     attr_accessor :label
     attr_accessor :value
     attr_accessor :explanation
-
-    validates :explanation, presence: true, if: -> { value.present? }
+    attr_accessor :textarea
+    validates :explanation, presence: true, if: -> { reason_with_textarea_selected? }
 
     alias_method :id, :label
+
+    private
+
+    def reason_with_textarea_selected?
+      value.present? && textarea.present?
+    end
   end
 
   class RejectionReasonsForm
@@ -79,17 +86,21 @@ module ProviderInterface
 
     QUESTIONS = [
       RejectionReasonQuestion.new(
-        label: 'QUESTION',
+        label: 'Was it related to candidate behaviour?',
+        additional_question: 'What did the candidate do?',
         reasons: [
-          RejectionReasonReason.new(label: 'Reason1'),
-          RejectionReasonReason.new(label: 'Reason2'),
+          RejectionReasonReason.new(label: 'Didn’t reply to our interview offer'),
+          RejectionReasonReason.new(label: 'Didn’t attend interview'),
+          RejectionReasonReason.new(label: 'Other', textarea: true),
         ],
       ),
       RejectionReasonQuestion.new(
-        label: 'QUESTION2',
+        label: 'Was it related to the quality of their application?',
+        additional_question: 'Which parts of the application needed improvement?',
         reasons: [
-          RejectionReasonReason.new(label: 'Reason1'),
-          RejectionReasonReason.new(label: 'Reason2'),
+          RejectionReasonReason.new(label: 'Personal statement'),
+          RejectionReasonReason.new(label: 'Subject knowledge'),
+          RejectionReasonReason.new(label: 'Other', textarea: true),
         ],
       ),
       RejectionReasonQuestion.new(

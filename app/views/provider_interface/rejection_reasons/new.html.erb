@@ -12,8 +12,13 @@
             <%= qf.fields_for :reasons, r do |rf| %>
               <%= rf.govuk_check_boxes_fieldset :value, small: true do %>
                 <%= rf.hidden_field :label %>
-                <%= rf.govuk_check_box :value, "true", multiple: false, label: { text: r.label } do %>
-                  <%= rf.govuk_text_area :explanation %>
+                <% if r.textarea %>
+                  <%= rf.hidden_field :textarea, value: true %>
+                  <%= rf.govuk_check_box :value, "true", multiple: false, label: { text: r.label } do %>
+                    <%= rf.govuk_text_area :explanation, rows: 5, max_words: 100 %>
+                  <% end %>
+                <% else %>
+                  <%= rf.govuk_check_box :value, "true", multiple: false, label: { text: r.label } %>
                 <% end %>
               <% end %>
             <% end %>
@@ -30,12 +35,20 @@
       <%= qf.govuk_radio_buttons_fieldset :y_or_n, legend: { text: q.label } do %>
         <%= qf.hidden_field :label %>
         <%= qf.govuk_radio_button :y_or_n, 'Y', label: { text: 'Yes' } do %>
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+            <%= q.additional_question %>
+          </legend>
           <% q.reasons.each do |r| %>
             <%= qf.fields_for :reasons, r do |rf| %>
               <%= rf.govuk_check_boxes_fieldset :value, small: true do %>
                 <%= rf.hidden_field :label %>
-                <%= rf.govuk_check_box :value, "true", multiple: false, label: { text: r.label } do %>
-                  <%= rf.govuk_text_area :explanation %>
+                <% if r.textarea %>
+                  <%= rf.hidden_field :textarea, value: true %>
+                  <%= rf.govuk_check_box :value, "true", multiple: false, label: { text: r.label } do %>
+                    <%= rf.govuk_text_area :explanation, rows: 5, max_words: 100 %>
+                  <% end %>
+                <% else %>
+                  <%= rf.govuk_check_box :value, "true", multiple: false, label: { text: r.label } %>
                 <% end %>
               <% end %>
             <% end %>
