@@ -30,16 +30,24 @@ module ProviderInterface
     attr_accessor :label
     attr_accessor :y_or_n
     attr_accessor :reasons
+    attr_accessor :explanation
     attr_accessor :answered
+    attr_accessor :requires_reasons
     attr_accessor :additional_question
 
     validates :y_or_n, presence: true
     validate :enough_reasons?, if: -> { y_or_n == 'Y' }
     validate :reasons_all_valid?, if: -> { y_or_n == 'Y' }
+    validate :explanation_valid?, if: -> { y_or_n == 'Y' && explanation.present? }
+
+    def initialize(*args)
+      super(*args)
+      @requires_reasons ||= reasons.count.positive?
+    end
 
     def enough_reasons?
-      if reasons.any? && reasons.select(&:value).count.zero?
-        errors.add(:y_or_n, "Please select a reason")
+      if requires_reasons && reasons.select(&:selected?).count.zero?
+        errors.add(:reasons, 'Please give a reason')
       end
     end
 
@@ -68,67 +76,74 @@ module ProviderInterface
 
     attr_accessor :label
     attr_accessor :value
-    attr_accessor :explanation
     attr_accessor :advice
-    attr_accessor :textarea
-    validates :explanation, presence: true, if: -> { reason_with_textarea_selected? }
+    attr_writer :textareas
+    validate :textareas_all_valid?, if: -> { value.present? }
 
     alias_method :id, :label
 
-    private
-
-    def reason_with_textarea_selected?
-      value.present? && textarea.present?
+    def selected?
+      value.present?
     end
+
+    def textareas
+      @textareas ||= []
+    end
+
+    def textareas_all_valid?
+      textareas.each_with_index do |t, i|
+        next unless t.invalid?
+
+        t.errors.each do |attr, message|
+          errors.add("textareas[#{i}].#{attr}", message)
+        end
+      end
+    end
+
+    def textareas_attributes=(attributes)
+      @textareas ||= []
+      attributes.each do |_id, r|
+        @textareas.push(RejectionReasonTextarea.new(r))
+      end
+    end
+  end
+
+  class RejectionReasonTextarea
+    include ActiveModel::Model
+
+    attr_accessor :label
+    attr_accessor :value
+
+    validates :value, presence: true
   end
 
   class RejectionReasonsForm
     include ActiveModel::Model
 
     QUESTIONS = [
-      [
-        RejectionReasonQuestion.new(
-          label: 'Was it related to candidate behaviour?',
-          additional_question: 'What did the candidate do?',
-          reasons: [
-            RejectionReasonReason.new(label: 'Didn’t reply to our interview offer'),
-            RejectionReasonReason.new(label: 'Didn’t attend interview'),
-            RejectionReasonReason.new(label: 'Other', textareas: %i[explanation advice]),
-          ],
-        ),
-        RejectionReasonQuestion.new(
-          label: 'Was it related to the quality of their application?',
-          additional_question: 'Which parts of the application needed improvement?',
-          reasons: [
-            RejectionReasonReason.new(label: 'Personal statement'),
-            RejectionReasonReason.new(label: 'Subject knowledge'),
-            RejectionReasonReason.new(label: 'Other', textareas: [:advice]),
-          ],
-        ),
-        RejectionReasonQuestion.new(
-          label: 'Was it related to qualifications?',
-          additional_question: 'Which qualifications?',
-          reasons: [
-            RejectionReasonReason.new(label: 'No Maths GCSE grade 4 (C) or above, or valid equivalent'),
-            RejectionReasonReason.new(label: 'Other', textareas: [:explanation]),
-          ],
-        ),
-      ],
-      [
-        RejectionReasonQuestion.new(
-          label: 'Why are you rejecting this application?',
-          reasons: [
-            RejectionReasonReason.new(textarea: [:explanation]),
-          ],
-        ),
-        RejectionReasonQuestion.new(
-          label: 'Is there any other advice or feedback you’d like to give?',
-          reasons: [
-            RejectionReasonReason.new(label: 'Please give details', textareas: [:explanation]),
-          ],
-        ),
-
-      ],
+      RejectionReasonQuestion.new(
+        label: :candidate_behaviour,
+        reasons: [
+          RejectionReasonReason.new(label: :no_reply_to_interview, textareas: [
+            RejectionReasonTextarea.new(label: :no_reply_explanation)
+          ]),
+          RejectionReasonReason.new(label: :no_attendance_at_interview, textareas: [
+            RejectionReasonTextarea.new(label: :no_attendance_explanation)
+          ]),
+          RejectionReasonReason.new(label: :other, textareas: [
+            RejectionReasonTextarea.new(label: :other_details),
+            RejectionReasonTextarea.new(label: :other_advice),
+          ]),
+        ],
+        explanation: RejectionReasonTextarea.new(label: :explain_candidate_behavior),
+      ),
+      RejectionReasonQuestion.new(
+        label: :quality_of_application,
+        reasons: [
+          RejectionReasonReason.new(label: :personal_statement),
+          RejectionReasonReason.new(label: :subject_knowledge),
+        ],
+      ),
     ]
 
     attr_writer :questions
@@ -158,9 +173,9 @@ module ProviderInterface
 
     def questions_for_current_step
       if answered_questions.count == 0
-        QUESTIONS.first
-      elsif answered_questions.map(&:y_or_n).flatten.last(2).include?('N')
-        QUESTIONS.last
+        QUESTIONS.take(1)
+      elsif answered_questions.count == 1
+        QUESTIONS.drop(1)
       else
         []
       end
