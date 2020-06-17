@@ -1,4 +1,5 @@
 <%= form_with model: @reasons_form, url: provider_interface_rejection_reasons_path do |f| %>
+  <%= f.object.errors.inspect %>
   <%= f.govuk_error_summary %>
 
   <div style="display: none;">
