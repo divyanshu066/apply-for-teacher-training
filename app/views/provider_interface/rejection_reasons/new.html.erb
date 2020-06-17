@@ -12,10 +12,12 @@
             <%= qf.fields_for :reasons, r do |rf| %>
               <%= rf.govuk_check_boxes_fieldset :value, small: true do %>
                 <%= rf.hidden_field :label %>
-                <% if r.textarea %>
-                  <%= rf.hidden_field :textarea, value: true %>
+                <% if r.textareas.present? %>
                   <%= rf.govuk_check_box :value, "true", multiple: false, label: { text: r.label } do %>
-                    <%= rf.govuk_text_area :explanation, rows: 5, max_words: 100 %>
+                    <% r.textareas.each do |textarea| %>
+                      <%= rf.hidden_field :textareas, value: textarea, multiple: true %>
+                      <%= rf.govuk_text_area textarea, rows: 5, max_words: 100 %>
+                    <% end %>
                   <% end %>
                 <% else %>
                   <%= rf.govuk_check_box :value, "true", multiple: false, label: { text: r.label } %>
@@ -42,10 +44,12 @@
             <%= qf.fields_for :reasons, r do |rf| %>
               <%= rf.govuk_check_boxes_fieldset :value, small: true do %>
                 <%= rf.hidden_field :label %>
-                <% if r.textarea %>
-                  <%= rf.hidden_field :textarea, value: true %>
+                <% if r.textareas.present? %>
                   <%= rf.govuk_check_box :value, "true", multiple: false, label: { text: r.label } do %>
-                    <%= rf.govuk_text_area :explanation, rows: 5, max_words: 100 %>
+                    <% r.textareas.each do |textarea| %>
+                      <%= rf.hidden_field :textareas, value: textarea, multiple: true %>
+                      <%= rf.govuk_text_area textarea, rows: 5, max_words: 100 %>
+                    <% end %>
                   <% end %>
                 <% else %>
                   <%= rf.govuk_check_box :value, "true", multiple: false, label: { text: r.label } %>

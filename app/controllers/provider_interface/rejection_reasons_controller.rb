@@ -69,7 +69,8 @@ module ProviderInterface
     attr_accessor :label
     attr_accessor :value
     attr_accessor :explanation
-    attr_accessor :textarea
+    attr_accessor :advice
+    attr_accessor :textareas
     validates :explanation, presence: true, if: -> { reason_with_textarea_selected? }
 
     alias_method :id, :label
@@ -77,7 +78,7 @@ module ProviderInterface
     private
 
     def reason_with_textarea_selected?
-      value.present? && textarea.present?
+      value.present? && textareas.present?
     end
   end
 
@@ -85,31 +86,49 @@ module ProviderInterface
     include ActiveModel::Model
 
     QUESTIONS = [
-      RejectionReasonQuestion.new(
-        label: 'Was it related to candidate behaviour?',
-        additional_question: 'What did the candidate do?',
-        reasons: [
-          RejectionReasonReason.new(label: 'Didn’t reply to our interview offer'),
-          RejectionReasonReason.new(label: 'Didn’t attend interview'),
-          RejectionReasonReason.new(label: 'Other', textarea: true),
-        ],
-      ),
-      RejectionReasonQuestion.new(
-        label: 'Was it related to the quality of their application?',
-        additional_question: 'Which parts of the application needed improvement?',
-        reasons: [
-          RejectionReasonReason.new(label: 'Personal statement'),
-          RejectionReasonReason.new(label: 'Subject knowledge'),
-          RejectionReasonReason.new(label: 'Other', textarea: true),
-        ],
-      ),
-      RejectionReasonQuestion.new(
-        label: 'QUESTION3',
-        reasons: [
-          RejectionReasonReason.new(label: 'Reason1'),
-          RejectionReasonReason.new(label: 'Reason2'),
-        ],
-      ),
+      [
+        RejectionReasonQuestion.new(
+          label: 'Was it related to candidate behaviour?',
+          additional_question: 'What did the candidate do?',
+          reasons: [
+            RejectionReasonReason.new(label: 'Didn’t reply to our interview offer'),
+            RejectionReasonReason.new(label: 'Didn’t attend interview'),
+            RejectionReasonReason.new(label: 'Other', textareas: %i[explanation advice]),
+          ],
+        ),
+        RejectionReasonQuestion.new(
+          label: 'Was it related to the quality of their application?',
+          additional_question: 'Which parts of the application needed improvement?',
+          reasons: [
+            RejectionReasonReason.new(label: 'Personal statement'),
+            RejectionReasonReason.new(label: 'Subject knowledge'),
+            RejectionReasonReason.new(label: 'Other', textareas: [:advice]),
+          ],
+        ),
+        RejectionReasonQuestion.new(
+          label: 'Was it related to qualifications?',
+          additional_question: 'Which qualifications?',
+          reasons: [
+            RejectionReasonReason.new(label: 'No Maths GCSE grade 4 (C) or above, or valid equivalent'),
+            RejectionReasonReason.new(label: 'Other', textareas: [:explanation]),
+          ],
+        ),
+      ],
+      [
+        RejectionReasonQuestion.new(
+          label: 'Why are you rejecting this application?',
+          reasons: [
+            RejectionReasonReason.new(textareas: [:explanation]),
+          ],
+        ),
+        RejectionReasonQuestion.new(
+          label: 'Is there any other advice or feedback you’d like to give?',
+          reasons: [
+            RejectionReasonReason.new(label: 'Please give details', textareas: [:explanation]),
+          ],
+        ),
+
+      ],
     ]
 
     attr_writer :questions
@@ -139,9 +158,9 @@ module ProviderInterface
 
     def questions_for_current_step
       if answered_questions.count == 0
-        QUESTIONS.take(2)
-      elsif answered_questions.count == 2
-        QUESTIONS.drop(2)
+        QUESTIONS.first
+      elsif answered_questions.map(&:y_or_n).flatten.last(2).include?('N')
+        QUESTIONS.last
       else
         []
       end
