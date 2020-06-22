@@ -14,7 +14,8 @@ module FindAPIHelper
     funding_type: 'fee',
     age_range_in_years: '4 to 8',
     vac_status: 'full_time_vacancies',
-    content_status: 'published'
+    content_status: 'published',
+    recruitment_cycle_year:
   )
     stub_find_api_provider(provider_code)
       .to_return(
@@ -67,7 +68,7 @@ module FindAPIHelper
                 'description': description,
                 'start_date': start_date,
                 'course_length': course_length,
-                'recruitment_cycle_year': '2020',
+                'recruitment_cycle_year': recruitment_cycle_year,
                 'findable?': findable,
                 'accrediting_provider': nil,
                 'funding_type': funding_type,
@@ -142,7 +143,8 @@ module FindAPIHelper
     course_length: 'OneYear',
     region_code: 'north_west',
     age_range_in_years: '4 to 8',
-    content_status: 'published'
+    content_status: 'published',
+    recruitment_cycle_year:
   )
     stub_find_api_provider(provider_code)
       .to_return(
@@ -195,7 +197,7 @@ module FindAPIHelper
                 'description': description,
                 'start_date': start_date,
                 'course_length': course_length,
-                'recruitment_cycle_year': '2020',
+                'recruitment_cycle_year': recruitment_cycle_year,
                 'findable?': findable,
                 'content_status': content_status,
                 'accrediting_provider': {
@@ -258,8 +260,8 @@ module FindAPIHelper
     course_length: 'OneYear',
     region_code: 'north_west',
     age_range_in_years: '4 to 8',
-    content_status: 'published'
-
+    content_status: 'published',
+    recruitment_cycle_year:
   )
     response_hash = {
       status: 200,
@@ -325,7 +327,7 @@ module FindAPIHelper
               'description': description,
               'start_date': start_date,
               'course_length': course_length,
-              'recruitment_cycle_year': '2020',
+              'recruitment_cycle_year': recruitment_cycle_year,
               'findable?': findable,
               'accrediting_provider': nil,
               'funding_type': 'fee',
@@ -401,9 +403,9 @@ module FindAPIHelper
         id: index.to_s,
         type: 'providers',
         attributes: {
-          provider_code: attributes[:provider_code],
-          provider_name: attributes[:name],
-          recruitment_cycle_year: '2020',
+          provider_code: attributes.fetch(:provider_code),
+          provider_name: attributes.fetch(:name),
+          recruitment_cycle_year: attributes.fetch(:recruitment_cycle_year),
         },
         relationships: {
           courses: {
@@ -415,7 +417,13 @@ module FindAPIHelper
       }
     end
 
-    stub_find_api_all_providers
+    recruitment_cycle_years = provider_data.map { |d| d.fetch(:recruitment_cycle_year) }.uniq
+
+    if recruitment_cycle_years.count > 1
+      raise 'It does not make sense to stub providers from different recruitment cycles in one request'
+    end
+
+    stub_find_api_all_providers(recruitment_cycle_years.first)
       .to_return(
         status: 200,
         headers: { 'Content-Type': 'application/vnd.api+json' },
@@ -426,8 +434,8 @@ module FindAPIHelper
       )
   end
 
-  def stub_find_api_all_providers_503
-    stub_find_api_all_providers
+  def stub_find_api_all_providers_503(recruitment_cycle_year)
+    stub_find_api_all_providers(recruitment_cycle_year)
       .to_return(
         status: 503,
         headers: { 'Content-Type': 'application/vnd.api+json' },
@@ -438,8 +446,8 @@ module FindAPIHelper
       )
   end
 
-  def stub_find_api_course_200(provider_code, course_code, course_name)
-    stub_find_api_course(provider_code, course_code)
+  def stub_find_api_course_200(provider_code, course_code, course_name, recruitment_cycle_year)
+    stub_find_api_course(provider_code, course_code, recruitment_cycle_year)
       .to_return(
         status: 200,
         headers: { 'Content-Type': 'application/vnd.api+json' },
@@ -451,6 +459,7 @@ module FindAPIHelper
               'course_code' => course_code,
               'name' => course_name,
               'provider_code' => provider_code,
+              'recruitment_cycle_year' => recruitment_cycle_year,
             },
           },
           'jsonapi' => { 'version' => '1.0' },
@@ -458,24 +467,24 @@ module FindAPIHelper
       )
   end
 
-  def stub_find_api_course_timeout(provider_code, course_code)
-    stub_find_api_course(provider_code, course_code)
+  def stub_find_api_course_timeout(provider_code, course_code, recruitment_cycle_year)
+    stub_find_api_course(provider_code, course_code, recruitment_cycle_year)
       .to_timeout
   end
 
-  def stub_find_api_course_404(provider_code, course_code)
-    stub_find_api_course(provider_code, course_code)
+  def stub_find_api_course_404(provider_code, course_code, recruitment_cycle_year)
+    stub_find_api_course(provider_code, course_code, recruitment_cycle_year)
       .to_return(status: 404)
   end
 
-  def stub_find_api_course_503(provider_code, course_code)
-    stub_find_api_course(provider_code, course_code)
+  def stub_find_api_course_503(provider_code, course_code, recruitment_cycle_year)
+    stub_find_api_course(provider_code, course_code, recruitment_cycle_year)
       .to_return(status: 503)
   end
 
-  def stub_find_api_course(provider_code, course_code)
+  def stub_find_api_course(provider_code, course_code, recruitment_cycle_year)
     stub_request(:get, ENV.fetch('FIND_BASE_URL') +
-      'recruitment_cycles/2020' \
+      "recruitment_cycles/#{recruitment_cycle_year}" \
       "/providers/#{provider_code}" \
       "/courses/#{course_code}")
   end
@@ -497,7 +506,8 @@ module FindAPIHelper
     vac_status: 'full_time_vacancies',
     qualifications: %w[PG PF],
     program_type: 'SD',
-    content_status: 'published'
+    content_status: 'published',
+    recruitment_cycle_year:
   )
     stub_find_api_provider(provider_code)
       .to_return(
@@ -550,7 +560,7 @@ module FindAPIHelper
                 'description': description,
                 'start_date': start_date,
                 'course_length': course_length,
-                'recruitment_cycle_year': '2020',
+                'recruitment_cycle_year': recruitment_cycle_year,
                 'findable?': findable,
                 'accrediting_provider': nil,
                 'funding_type': funding_type,
@@ -615,16 +625,16 @@ module FindAPIHelper
 
 private
 
-  def stub_find_api_all_providers
+  def stub_find_api_all_providers(recruitment_cycle_year)
     stub_request(
       :get,
-      "#{ENV.fetch('FIND_BASE_URL')}recruitment_cycles/2020/providers",
+      "#{ENV.fetch('FIND_BASE_URL')}recruitment_cycles/#{recruitment_cycle_year}/providers",
     )
   end
 
-  def stub_find_api_provider(provider_code)
+  def stub_find_api_provider(provider_code, recruitment_cycle_year)
     stub_request(:get, ENV.fetch('FIND_BASE_URL') +
-      'recruitment_cycles/2020' \
+      "recruitment_cycles/#{recruitment_cycle_year}" \
       "/providers/#{provider_code}?include=sites,courses.sites,courses.subjects,courses.site_statuses.site")
   end
 end

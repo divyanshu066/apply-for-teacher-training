@@ -4,9 +4,9 @@ class SyncAllProvidersFromFind
     #
     # For the full response, see:
     # https://api2.publish-teacher-training-courses.service.gov.uk/api/v3/recruitment_cycles/2020/providers
-    find_providers = FindAPI::Provider.current_cycle.all
+    current_cycle_providers = FindAPI::Provider.cycle(RecruitmentCycle.current_year).all
 
-    sync_providers(find_providers)
+    sync_providers(current_cycle_providers)
 
     FindSyncCheck.set_last_sync(Time.zone.now)
   rescue JsonApiClient::Errors::ApiError

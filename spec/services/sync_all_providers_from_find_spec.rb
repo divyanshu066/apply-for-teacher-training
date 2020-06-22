@@ -9,10 +9,12 @@ RSpec.describe SyncAllProvidersFromFind do
         {
           provider_code: 'ABC',
           name: 'ABC College',
+          recruitment_cycle_year: '2020',
         },
         {
           provider_code: 'DEF',
           name: 'DEF College',
+          recruitment_cycle_year: '2020',
         },
       ])
 
@@ -26,6 +28,7 @@ RSpec.describe SyncAllProvidersFromFind do
         {
           provider_code: 'ABC',
           name: 'ABC College',
+          recruitment_cycle_year: '2020',
         },
       ])
 
@@ -37,7 +40,7 @@ RSpec.describe SyncAllProvidersFromFind do
     it 'does not set the last updated timestamp when encountering an error' do
       FindSyncCheck.clear_last_sync
 
-      stub_find_api_all_providers_503
+      stub_find_api_all_providers_503('2020')
 
       expect { SyncAllProvidersFromFind.call }.to raise_error(SyncAllProvidersFromFind::SyncFindApiError)
 
@@ -51,10 +54,12 @@ RSpec.describe SyncAllProvidersFromFind do
         {
           provider_code: 'ABC',
           name: 'ABC College',
+          recruitment_cycle_year: '2020',
         },
         {
           provider_code: 'DEF',
           name: 'DEF College',
+          recruitment_cycle_year: '2020',
         },
       ])
 
@@ -68,10 +73,12 @@ RSpec.describe SyncAllProvidersFromFind do
         {
           provider_code: 'ABC',
           name: 'ABC College',
+          recruitment_cycle_year: '2020',
         },
         {
           provider_code: 'DEF',
           name: 'DEF College',
+          recruitment_cycle_year: '2020',
         },
       ])
 
