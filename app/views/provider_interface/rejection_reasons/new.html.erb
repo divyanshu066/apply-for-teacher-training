@@ -1,0 +1,29 @@
+<%= form_with model: @reasons_form, url: provider_interface_confirm_rejection_reasons_path do |f| %>
+  <%= f.govuk_error_summary %>
+
+  <%= f.hidden_field :step_1_complete, value: true %>
+
+  <%= f.govuk_radio_buttons_fieldset(
+    :candidate_behaviour,
+    legend: { text: t("rejection_reasons.questions.candidate_behaviour.label", candidates_name: @application_choice.application_form.full_name) }) do %>
+    <%= f.govuk_radio_button :candidate_behaviour, true, label: { text: 'Yes' } do %>
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+        <%= t("rejection_reasons.questions.candidate_behaviour.additional_question") %>
+      </legend>
+      <%= f.govuk_check_boxes_fieldset :value, small: true do %>
+        <%= f.govuk_check_box :candidate_did_not_reply_to_interview_offer, true, multiple: false, label: { text: t("rejection_reasons.reasons.candidate_behaviour.didnt_reply_to_our_interview_offer.label") } %>
+        <%= f.govuk_check_box :candidate_did_not_attend_interview, 'true', multiple: false, label: { text: t("rejection_reasons.reasons.candidate_behaviour.didnt_attend_interview.label") } %>
+        <%= f.govuk_check_box :candidate_behaviour_other, 'true', multiple: false, label: { text: t("rejection_reasons.reasons.other.label") } do %>
+
+          <%= f.govuk_text_area :candidate_behaviour_other_details, rows: 5, max_words: 200, label: { text: t("rejection_reasons.text_area.details.label") } %>
+          <%= f.govuk_text_area :candidate_behaviour_other_advice, rows: 5, max_words: 200, label: { text: t("rejection_reasons.text_area.advice.label") } %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= f.govuk_radio_button :candidate_behaviour, false, label: { text: 'No' } %>
+  <% end %>
+
+
+  <%= f.submit 'Continue', class: 'govuk-button' %>
+<% end %>
