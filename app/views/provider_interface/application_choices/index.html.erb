@@ -47,7 +47,7 @@
         <% @application_choices.each_with_index do |choice, index| %>
           <%= render ProviderInterface::ApplicationCardComponent.new(
             application_choice: choice,
-            show_date: ProviderInterface::SortApplicationChoices.sort_by_attribute(@page_state.sort_by),
+            show_date: @page_state.sort_by,
           ) %>
         <% end %>
       </div>

@@ -4,12 +4,8 @@ module ProviderInterface
       application_choices.order(sort_order(sort_by))
     end
 
-    def self.sort_by_attribute(sort_by)
-      sort_by == 'Days left to respond' ? :reject_by_default_at : :updated_at
-    end
-
     def self.sort_order(sort_by)
-      return { updated_at: :desc } if sort_by != 'Days left to respond'
+      return { updated_at: :desc } if sort_by != 'days_left_to_respond'
 
       Arel.sql(
         <<-ORDER_BY.strip_heredoc,

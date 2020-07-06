@@ -20,11 +20,12 @@ module ProviderInterface
     end
 
     def sort_by
-      sort_options.include?(@params[:sort_by]) ? @params[:sort_by] : 'Last changed'
+      sort_options.values.include?(@params[:sort_by]) ? @params[:sort_by] : 'last_changed'
     end
 
     def sort_options
-      ['Last changed', 'Days left to respond']
+      { 'Last changed' => 'last_changed',
+        'Days left to respond' => 'days_left_to_respond' }
     end
 
   private
