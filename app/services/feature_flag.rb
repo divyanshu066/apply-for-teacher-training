@@ -35,6 +35,7 @@ class FeatureFlag
     [:hesa_degree_data, 'Use structured HESA data to autocomplete certain parts of the add degree flow', 'Malcolm Baig'],
     [:international_addresses, 'Candidates who live outside the UK can enter their local address in free-text format', 'Steve Hook'],
     [:international_personal_details, 'Changes to the candidate personal details section to account for international applicants.', 'David Gisbey'],
+    [:international_degrees, 'Changes to the model and forms for degree qualifications to cater for non-UK degrees.', 'Steve Hook'],
   ].freeze
 
   FEATURES = (PERMANENT_SETTINGS + TEMPORARY_FEATURE_FLAGS).map { |name, description, owner|
