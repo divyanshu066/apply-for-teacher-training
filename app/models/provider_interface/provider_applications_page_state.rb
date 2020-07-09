@@ -1,6 +1,7 @@
 module ProviderInterface
   class ProviderApplicationsPageState
     attr_accessor :available_filters, :filter_selections, :provider_user
+    attr_writer :applied_filters
 
     def initialize(params:, provider_user:)
       @params = params
@@ -16,6 +17,8 @@ module ProviderInterface
     end
 
     def applied_filters
+      return @applied_filters if @applied_filters&.any?
+
       @params.permit(:candidate_name, :sort_by, provider: [], status: [], accredited_provider: [], provider_location: []).to_h
     end
 

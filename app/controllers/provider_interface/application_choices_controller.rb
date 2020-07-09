@@ -2,11 +2,15 @@ module ProviderInterface
   class ApplicationChoicesController < ProviderInterfaceController
     before_action :set_application_choice_and_sub_navigation_items, except: %i[index]
 
+    FILTERS_SESSION_KEY = 'provider_interface_application_choices_filters'.freeze
+
     def index
       @page_state = ProviderApplicationsPageState.new(
         params: params,
         provider_user: current_provider_user,
       )
+
+      @page_state.applied_filters = memoized_filters(@page_state.applied_filters)
 
       application_choices = GetApplicationChoicesForProviders.call(
         providers: current_provider_user.providers,
@@ -113,6 +117,13 @@ module ProviderInterface
         application_choice: application_choice,
         available_providers: available_providers,
       ).call
+    end
+
+    def memoized_filters(filters)
+      session[FILTERS_SESSION_KEY] = filters if filters.any?
+      return session[FILTERS_SESSION_KEY].symbolize_keys if session.key?(FILTERS_SESSION_KEY)
+
+      filters
     end
 
     def new_note_params
