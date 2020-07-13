@@ -316,7 +316,6 @@ stages:
 - stage: deploy_qa
   displayName: 'Deploy - QA'
   dependsOn: build_release
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   variables:
   - group: APPLY - ENV - QA
   jobs:
