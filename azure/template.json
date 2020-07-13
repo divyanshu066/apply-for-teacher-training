@@ -217,9 +217,8 @@
         "customDomains":{
             "type": "array",
             "metadata": {
-                "decsription": "JSON array holding the custom domain name and certificate thumbprint; [{domainName: certificateThumbprint:}]"
-            },
-            "defaultValue": []
+                "description": "The top level common domain for the service, e.g. apply-for-teacher-training.service.gov.uk."
+            }
         },
         "railsServeStaticFiles": {
             "type": "string",
