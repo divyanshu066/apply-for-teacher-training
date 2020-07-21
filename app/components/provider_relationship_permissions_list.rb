@@ -14,6 +14,6 @@ class ProviderRelationshipPermissionsList < ViewComponent::Base
   end
 
   def show_view_applications_only_section?
-    @permission_model.ratifying_provider_can_view_applications_only? || @permission_model.training_provider_can_view_applications_only?
+    providers_that_can(:view_applications_only).any?
   end
 end

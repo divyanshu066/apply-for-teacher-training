@@ -15,11 +15,8 @@
 <% if show_view_applications_only_section? %>
   <p class="govuk-!-margin-bottom-1 govuk-body">The following organisation(s) can only view applications:</p>
   <ul class="govuk-list">
-    <% if @permission_model.training_provider_can_view_applications_only? %>
-      <li><%= render CheckIcon.new %> <%= @permission_model.training_provider.name %></li>
-    <% end %>
-    <% if @permission_model.ratifying_provider_can_view_applications_only? %>
-      <li><%= render CheckIcon.new %> <%= @permission_model.ratifying_provider.name %></li>
+    <% providers_that_can('view_applications_only').each do |provider| %>
+      <li><%= render CheckIcon.new %> <%= provider.name %> </li>
     <% end %>
   </ul>
 <% end %>

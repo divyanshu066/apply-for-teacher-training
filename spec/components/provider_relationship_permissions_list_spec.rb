@@ -37,7 +37,7 @@ RSpec.describe ProviderRelationshipPermissionsList do
     expect(result.css('.govuk-list')[1].text).not_to include(ratifiying_provider.name.to_s)
   end
 
-  it 'renders organisations who can only view view applications' do
+  it 'renders organisations who can only view applications' do
     result = render_inline(described_class.new(provider_relationship_permissions))
 
     expect(result.css('.govuk-body')[2].text).to include('The following organisation(s) can only view applications:')
