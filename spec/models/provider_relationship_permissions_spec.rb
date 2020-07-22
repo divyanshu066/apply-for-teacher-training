@@ -5,12 +5,46 @@ RSpec.describe ProviderRelationshipPermissions do
     subject(:permissions_fields) { described_class.permissions_fields }
 
     it 'returns all permissions fields' do
-      expect(permissions_fields).to eq(%w[
+      expect(permissions_fields).to eq(%i[
         ratifying_provider_can_make_decisions
         training_provider_can_make_decisions
         ratifying_provider_can_view_safeguarding_information
         training_provider_can_view_safeguarding_information
       ])
+    end
+  end
+
+  describe 'validations' do
+    let(:setup_at) { Time.zone.now }
+
+    subject(:permissions) do
+      described_class.new(
+        ratifying_provider: build_stubbed(:provider),
+        training_provider: build_stubbed(:provider),
+        ratifying_provider_can_view_safeguarding_information: true,
+        setup_at: setup_at,
+      )
+    end
+
+    it 'ensures at least one permission in each pair is active' do
+      expect(permissions.valid?).to be false
+      expect(permissions.errors.keys).to eq(%i[make_decisions])
+    end
+
+    context 'when permissions have not been set up' do
+      let(:setup_at) { nil }
+
+      it 'skips validation' do
+        expect(permissions.valid?).to be true
+      end
+    end
+
+    context 'when at least one permission in each pair is active' do
+      it 'is a valid set of permissions' do
+        permissions.training_provider_can_make_decisions = true
+
+        expect(permissions.valid?).to be true
+      end
     end
   end
 end
