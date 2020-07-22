@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_14_112945) do
+ActiveRecord::Schema.define(version: 2020_07_21_125644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -122,8 +122,10 @@ ActiveRecord::Schema.define(version: 2020_07_14_112945) do
     t.string "international_address"
     t.string "right_to_work_or_study"
     t.string "right_to_work_or_study_details"
-    t.string "multiple_nationalities_details"
     t.boolean "efl_completed", default: false
+    t.string "third_nationality"
+    t.string "fourth_nationality"
+    t.string "fifth_nationality"
     t.index ["candidate_id"], name: "index_application_forms_on_candidate_id"
     t.index ["submitted_at"], name: "index_application_forms_on_submitted_at"
   end
@@ -288,6 +290,7 @@ ActiveRecord::Schema.define(version: 2020_07_14_112945) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "qualification_status", null: false
+    t.text "no_qualification_details"
     t.index ["application_form_id"], name: "index_english_proficiencies_on_application_form_id", unique: true
     t.index ["efl_qualification_type", "efl_qualification_id"], name: "index_elp_on_efl_qualification_type_and_id"
   end
@@ -317,6 +320,14 @@ ActiveRecord::Schema.define(version: 2020_07_14_112945) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["application_choice_id"], name: "index_notes_on_application_choice_id"
     t.index ["provider_user_id"], name: "index_notes_on_provider_user_id"
+  end
+
+  create_table "other_efl_qualifications", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "grade", null: false
+    t.integer "award_year", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "provider_agreements", force: :cascade do |t|
