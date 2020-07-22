@@ -26,7 +26,6 @@ RSpec.feature 'Managing provider to provider relationship permissions' do
     then_i_should_see_the_safeguarding_declaration_section
 
     when_i_visit_the_edit_provider_relationship_permissions_page
-    and_i_allow_the_ratifying_provider_to_view_safeguarding_information
     and_i_deny_my_training_provider_permission_to_view_safeguarding_information
 
     then_i_can_see_the_permissions_were_successfully_changed
@@ -50,7 +49,7 @@ RSpec.feature 'Managing provider to provider relationship permissions' do
     @provider_user = ProviderUser.last
     @provider_user.provider_permissions.update_all(manage_organisations: true)
     @training_provider = Provider.find_by(code: 'ABC')
-    @ratifying_provider = Provider.find_by(code: 'DEF')
+    @ratifying_provider = create(:provider)
   end
 
   def and_i_am_permitted_to_view_safeguarding_information
@@ -62,6 +61,8 @@ RSpec.feature 'Managing provider to provider relationship permissions' do
       :provider_relationship_permissions,
       ratifying_provider: @ratifying_provider,
       training_provider: @training_provider,
+      ratifying_provider_can_view_safeguarding_information: true,
+      training_provider_can_view_safeguarding_information: false,
       setup_at: Time.zone.now,
     )
   end
@@ -115,7 +116,7 @@ RSpec.feature 'Managing provider to provider relationship permissions' do
 
     within(find('.view-safeguarding-information', match: :first)) do
       expect(page).to have_content @training_provider.name
-      expect(page).not_to have_content @ratifying_provider.name
+      expect(page).to have_content @ratifying_provider.name
     end
   end
 
@@ -125,12 +126,6 @@ RSpec.feature 'Managing provider to provider relationship permissions' do
 
   def then_i_should_see_the_safeguarding_declaration_section
     expect(page).to have_content('Criminal convictions and professional misconduct')
-  end
-
-  def and_i_allow_the_ratifying_provider_to_view_safeguarding_information
-    within(find('.view-safeguarding-information', match: :first)) do
-      check @ratifying_provider.name
-    end
   end
 
   def and_i_deny_my_training_provider_permission_to_view_safeguarding_information
