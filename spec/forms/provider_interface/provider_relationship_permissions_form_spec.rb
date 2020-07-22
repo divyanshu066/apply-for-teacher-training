@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ProviderInterface::ProviderRelationshipPermissionsForm do
-  let(:permissions) { create(:provider_relationship_permissions) }
+  let(:permissions) { build_stubbed(:provider_relationship_permissions, setup_at: nil) }
 
   subject(:form) do
     described_class.new(permissions: permissions)
@@ -11,7 +11,9 @@ RSpec.describe ProviderInterface::ProviderRelationshipPermissionsForm do
     it 'assigns permissions attributes for accredited and training permissions' do
       allow(permissions).to receive(:assign_attributes)
 
-      form.assign_permissions_attributes({ training_provider_can_view_safeguarding_information: 'true' })
+      form.assign_permissions_attributes(
+        view_safeguarding_information: { training_provider_can_view_safeguarding_information: 'true' },
+      )
 
       expect(permissions).to have_received(:assign_attributes)
         .with({
@@ -25,7 +27,7 @@ RSpec.describe ProviderInterface::ProviderRelationshipPermissionsForm do
 
   describe '#update!' do
     let(:permissions_attrs) do
-      { ratifying_provider_can_make_decisions: 'true', training_provider_can_make_decisions: 'true' }
+      { make_decisions: { ratifying_provider_can_make_decisions: 'true', training_provider_can_make_decisions: 'true' } }
     end
 
     before do

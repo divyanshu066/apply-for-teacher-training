@@ -38,13 +38,19 @@ module ProviderInterface
 
       params
         .require(:provider_interface_provider_relationship_permissions_form)
-        .require(:permissions)
-        .permit(*ProviderRelationshipPermissions.permissions_fields)
-        .to_h
+        .permit(grouped_permissions_params).to_h
     end
 
     def provider_relationship_permissions_params
       provider_relationship_permissions_form_params.fetch(:permissions, {})
+    end
+
+    def grouped_permissions_params
+      [].tap do |params_ary|
+        params_ary << ProviderRelationshipPermissions::PERMISSIONS.index_with do |permission|
+          ProviderRelationshipPermissions.permissions_fields.select { |f| f.to_s.end_with?(permission.to_s) }
+        end
+      end
     end
 
     def render_404_unless_permissions_found
