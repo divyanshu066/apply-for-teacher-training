@@ -63,7 +63,8 @@ gem 'http'
 gem 'jwt'
 
 gem 'openapi3_parser', '0.8.2'
-gem 'rouge'
+gem 'govuk_openapi_reference', path: '../govuk_openapi_reference'
+
 gem 'ruby-graphviz'
 
 gem 'kaminari'

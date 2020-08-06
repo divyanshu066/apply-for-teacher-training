@@ -5,6 +5,15 @@ GIT
     audited (4.9.0)
       activerecord (>= 4.2, < 6.1)
 
+PATH
+  remote: ../govuk_openapi_reference
+  specs:
+    govuk_openapi_reference (0.1.0)
+      activesupport
+      openapi3_parser
+      redcarpet
+      rouge
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -291,7 +300,7 @@ GEM
       pry (~> 0.13.0)
     pry-rails (0.3.9)
       pry (>= 0.10.4)
-    psych (3.1.0)
+    psych (3.2.0)
     public_suffix (4.0.5)
     puma (4.3.5)
       nio4r (~> 2.0)
@@ -516,6 +525,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   govuk_design_system_formbuilder (~> 1.2.6)
+  govuk_openapi_reference!
   guard-rspec
   holidays
   http
@@ -545,7 +555,6 @@ DEPENDENCIES
   redcarpet
   request_store-sidekiq
   request_store_rails
-  rouge
   rspec-benchmark
   rspec-rails
   rspec_junit_formatter
