@@ -16,13 +16,9 @@ RSpec.describe VendorAPI::ApplicationsController, type: :request do
                                          headers: { 'Authorization' => "Token #{api_token}" }
       end
 
-      it 'returns a 200 status' do
-        calling_the_index
-        expect(response.code).to eq('200')
-      end
-
-      it 'runs in less than 0.5s' do
+      it 'returns a 200 status and runs in less than 0.5s' do
         expect { calling_the_index }.to perform_under(0.5).sec
+        expect(response.code).to eq('200')
       end
     end
   end
