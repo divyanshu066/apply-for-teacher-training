@@ -1,0 +1,6 @@
+<%= form_with model: @task, url: support_interface_create_task_path do |f| %>
+  <%= f.govuk_error_summary %>
+
+  <%= f.govuk_text_area :code, label: { text: 'Code to run', size: 'm' }, rows: 20, hint_text: 'Your code will be run in an audited block.', class: 'govuk-textarea app-task-code' %>
+  <%= f.govuk_submit 'Continue' %>
+<% end %>

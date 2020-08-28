@@ -143,6 +143,7 @@ en:
     gcse_naric_reference: Do you have a NARIC statement of comparability for your maths qualification?
     guidance: User guidance
     command_line: Command line
+    new_task: New task
     applications_closed: Create an Apply for teacher training account
   layout:
     support:

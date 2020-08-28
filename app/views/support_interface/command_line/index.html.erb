@@ -2,12 +2,9 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <h2 class="govuk-heading-m">Sandbox REPL</h2>
-    <p class="govuk-body">Use the Sandbox REPL to run multiple Ruby commands, such as for extracting data for analysis, or testing scripts. The REPL runs in an environment that won't affect existing data.</p>
-    <p class="govuk-body">All sessions are logged and audited.</p>
-
     <h2 class="govuk-heading-m">Schedule a one-off task</h2>
     <p class="govuk-body">Use a one-off task to trigger jobs or run code that affects production data. They are queued in the background and must be approved by another support user before they run.</p>
     <p class="govuk-body">All one-off tasks are logged and audited.</p>
+    <%= govuk_button_link_to 'New task', support_interface_create_task_path %>
   </div>
 </div>

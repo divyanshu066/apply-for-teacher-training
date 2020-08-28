@@ -465,6 +465,15 @@ ActiveRecord::Schema.define(version: 2020_09_03_170404) do
     t.index ["email_address"], name: "index_support_users_on_email_address", unique: true
   end
 
+  create_table "tasks", force: :cascade do |t|
+    t.bigint "support_user_id", null: false
+    t.text "code", null: false
+    t.string "status", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["support_user_id"], name: "index_tasks_on_support_user_id"
+  end
+
   create_table "toefl_qualifications", force: :cascade do |t|
     t.string "registration_number", null: false
     t.integer "total_score", null: false
@@ -535,6 +544,7 @@ ActiveRecord::Schema.define(version: 2020_09_03_170404) do
   add_foreign_key "reference_tokens", "\"references\"", column: "application_reference_id", on_delete: :cascade
   add_foreign_key "references", "application_forms", on_delete: :cascade
   add_foreign_key "sites", "providers"
+  add_foreign_key "tasks", "support_users"
   add_foreign_key "ucas_matches", "candidates"
   add_foreign_key "vendor_api_tokens", "providers", on_delete: :cascade
 end
