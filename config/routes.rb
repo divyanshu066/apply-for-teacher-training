@@ -766,6 +766,8 @@ Rails.application.routes.draw do
 
     get '/guidance' => 'guidance#index', as: :guidance
 
+    get '/command-line' => 'command_line#index', as: :command_line
+
     get '/sign-in' => 'sessions#new'
     get '/sign-out' => 'sessions#destroy'
 

@@ -29,6 +29,7 @@ class NavigationItems
           NavigationItem.new('Tasks', support_interface_tasks_path, is_active(current_controller, 'tasks')),
           NavigationItem.new('Users', support_interface_users_path, is_active(current_controller, 'users')),
           NavigationItem.new('Guidance', support_interface_guidance_path, is_active(current_controller, 'guidance')),
+          NavigationItem.new('⌨️ Command line', support_interface_command_line_path, is_active(current_controller, 'command_line')),
           NavigationItem.new(current_support_user.email_address, nil, false),
           NavigationItem.new('Sign out', support_interface_sign_out_path, false),
         ]
