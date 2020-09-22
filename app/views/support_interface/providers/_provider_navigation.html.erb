@@ -1,4 +1,5 @@
-<% content_for :title, "#{@provider.name_and_code} - #{title}" %>
+<% content_for :caption, "#{@provider.code}" %>
+<% content_for :title, "#{@provider.name}" %>
 
 <% content_for :before_content, govuk_back_link_to(support_interface_providers_path, 'Back to providers') %>
 
@@ -12,5 +13,3 @@
   { name: 'Sites', url: support_interface_provider_sites_path },
   { name: 'History', url: support_interface_provider_history_path },
 ]) %>
-
-<h2 class='govuk-heading-l'><%= title %></h2>
