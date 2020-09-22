@@ -89,7 +89,7 @@ class ApplicationChoice < ApplicationRecord
   end
 
   def site_full?
-    course.course_options.where(site: course_option.site).vacancies.blank?
+    course.course_options.where(site: course_option.site).all?(&:no_vacancies?)
   end
 
   def site_full_error

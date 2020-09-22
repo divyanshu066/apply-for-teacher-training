@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_08_141522) do
+ActiveRecord::Schema.define(version: 2020_09_24_145442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -265,6 +265,7 @@ ActiveRecord::Schema.define(version: 2020_09_08_141522) do
     t.jsonb "qualifications"
     t.string "program_type"
     t.boolean "withdrawn"
+    t.boolean "force_open", default: false, null: false
     t.index ["code"], name: "index_courses_on_code"
     t.index ["exposed_in_find", "open_on_apply"], name: "index_courses_on_exposed_in_find_and_open_on_apply"
     t.index ["provider_id"], name: "index_courses_on_provider_id"

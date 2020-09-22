@@ -10,7 +10,11 @@ class CourseOption < ApplicationRecord
   validate :validate_providers
 
   scope :selectable, -> { where(site_still_valid: true) }
-  scope :available, -> { selectable.where(vacancy_status: 'vacancies') }
+  scope :available, lambda {
+    selectable.joins(:course).where(vacancy_status: 'vacancies').or(
+      selectable.joins(:course).where(courses: { force_open: true })
+    )
+  }
 
   enum study_mode: {
     full_time: 'full_time',
@@ -21,6 +25,10 @@ class CourseOption < ApplicationRecord
     vacancies: 'vacancies',
     no_vacancies: 'no_vacancies',
   }
+
+  def no_vacancies?
+    !course.force_open && vacancy_status == 'no_vacancies'
+  end
 
   def validate_providers
     return unless site.present? && course.present?
@@ -38,9 +46,7 @@ class CourseOption < ApplicationRecord
     !course.open_on_apply?
   end
 
-  def course_full?
-    course.course_options.vacancies.blank?
-  end
+  delegate :full?, to: :course, prefix: true
 
   def course_withdrawn?
     course.withdrawn
