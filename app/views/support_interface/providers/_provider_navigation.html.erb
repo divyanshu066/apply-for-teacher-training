@@ -3,8 +3,24 @@
 
 <% content_for :before_content, govuk_back_link_to(support_interface_providers_path, 'Back to providers') %>
 
+<% dsa = capture do %>
+  <% if @provider_agreement %>
+    Accepted by <strong>
+    <%= @provider_agreement.provider_user.email_address %>
+    </strong>
+    on
+    <%= @provider_agreement.accepted_at.to_s(:govuk_date) %>.
+  <% else %>
+    No data sharing agreement has been accepted yet.
+  <% end %>
+<% end %>
+
+<%= render(SummaryCardComponent.new(rows: {
+  'Last updated' => @provider.updated_at.to_s(:govuk_date_and_time),
+  'Data sharing agreement' => dsa,
+})) %>
+
 <%= render TabNavigationComponent.new(items: [
-  { name: 'Details', url: support_interface_provider_path },
   { name: 'Applications', url: support_interface_provider_applications_path },
   { name: 'Users', url: support_interface_provider_user_list_path },
   { name: 'Courses', url: support_interface_provider_courses_path },

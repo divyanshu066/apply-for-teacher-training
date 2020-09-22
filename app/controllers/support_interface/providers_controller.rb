@@ -27,8 +27,7 @@ module SupportInterface
     end
 
     def show
-      @provider = Provider.find(params[:provider_id])
-      @provider_agreement = ProviderAgreement.data_sharing_agreements.for_provider(@provider).last
+      redirect_to action: :applications
     end
 
     def courses
