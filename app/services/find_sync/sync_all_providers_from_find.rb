@@ -6,10 +6,6 @@ module FindSync
       # For the full response, see:
       # https://api2.publish-teacher-training-courses.service.gov.uk/api/v3/recruitment_cycles/2020/providers
       sync_providers(
-        FindAPI::Provider.recruitment_cycle(2020).all,
-      )
-
-      sync_providers(
         FindAPI::Provider.recruitment_cycle(2021).all,
       )
 
