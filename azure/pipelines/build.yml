@@ -31,7 +31,7 @@ variables:
 - name: gemsNodeModulesImageName
   value: 'apply-for-teacher-training-gems-node-modules'
 - name: debug
-  value: false
+  value: true
 - name: deployOnly
   value: false
 - name: buildCancelled
@@ -259,7 +259,6 @@ stages:
 - stage: deploy_qa
   displayName: 'Deploy - QA'
   dependsOn: build_release
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   variables:
   - group: APPLY - ENV - QA
   jobs:
