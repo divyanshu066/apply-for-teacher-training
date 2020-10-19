@@ -101,7 +101,7 @@ class TestApplications
         end
       end
 
-      return if states.include? :unsubmitted
+      return @application_form if states.include? :unsubmitted
 
       if states.include? :cancelled
         SupportInterface::CancelApplicationForm.new(application_form: @application_form).save!

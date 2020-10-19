@@ -10,7 +10,11 @@ module CandidateInterface
         if more_reference_needed? && !FeatureFlag.active?(:decoupled_references)
           redirect_to candidate_interface_additional_referee_path
         elsif current_candidate.current_application.blank_application?
-          redirect_to candidate_interface_before_you_start_path
+          if sandbox
+            redirect_to candidate_interface_prefill_application_path
+          else
+            redirect_to candidate_interface_before_you_start_path
+          end
         else
           redirect_to candidate_interface_application_form_path
         end
