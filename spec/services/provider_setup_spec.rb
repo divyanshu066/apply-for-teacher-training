@@ -84,6 +84,15 @@ RSpec.describe ProviderSetup do
       expect(next_relationship_pending).to be_nil
     end
 
+    it 'returns relationships that have been set up but lack all permissions' do
+      permissions = create(
+        :provider_relationship_permissions,
+        training_provider: training_provider,
+        ratifying_provider: create(:provider),
+        setup_at: Time.zone.now,
+      )
+    end
+
     it 'returns nil if no relationships exist' do
       expect(next_relationship_pending).to be_nil
     end
