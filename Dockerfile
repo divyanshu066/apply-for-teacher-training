@@ -44,8 +44,7 @@ ENV WKHTMLTOPDF_GEM=wkhtmltopdf-binary-edge-alpine \
 
 RUN apk -U upgrade && \
     apk add --update --no-cache nodejs yarn tzdata libpq libxml2 libxslt graphviz && \
-    echo "Europe/London" > /etc/timezone && \
-    cp /usr/share/zoneinfo/Europe/London /etc/localtime
+
 
 COPY --from=install-gems-node-modules /app /app
 COPY --from=install-gems-node-modules /usr/local/bundle/ /usr/local/bundle/
@@ -79,8 +78,6 @@ ENV WKHTMLTOPDF_GEM=wkhtmltopdf-binary-edge-alpine \
 
 RUN apk -U upgrade && \
     apk add --update --no-cache tzdata libpq libxml2 libxslt graphviz && \
-    echo "Europe/London" > /etc/timezone && \
-    cp /usr/share/zoneinfo/Europe/London /etc/localtime
 
 COPY --from=assets-precompile /app /app
 COPY --from=assets-precompile /usr/local/bundle/ /usr/local/bundle/
