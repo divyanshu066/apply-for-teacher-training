@@ -43,7 +43,7 @@ ENV WKHTMLTOPDF_GEM=wkhtmltopdf-binary-edge-alpine \
     GOVUK_NOTIFY_CALLBACK_API_KEY=TestKey
 
 RUN apk -U upgrade && \
-    apk add --update --no-cache nodejs yarn tzdata libpq libxml2 libxslt graphviz && \
+    apk add --update --no-cache nodejs yarn tzdata libpq libxml2 libxslt graphviz
 
 
 COPY --from=install-gems-node-modules /app /app
@@ -77,7 +77,7 @@ ENV WKHTMLTOPDF_GEM=wkhtmltopdf-binary-edge-alpine \
     SHA=${VERSION}
 
 RUN apk -U upgrade && \
-    apk add --update --no-cache tzdata libpq libxml2 libxslt graphviz && \
+    apk add --update --no-cache tzdata libpq libxml2 libxslt graphviz
 
 COPY --from=assets-precompile /app /app
 COPY --from=assets-precompile /usr/local/bundle/ /usr/local/bundle/
