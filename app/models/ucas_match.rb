@@ -13,7 +13,17 @@ class UCASMatch < ApplicationRecord
     initial_emails_sent: 'initial_emails_sent',
     reminder_emails_sent: 'reminder_emails_sent',
     ucas_withdrawal_requested: 'ucas_withdrawal_requested',
+    resolved_on_apply: 'resolved_on_apply',
+    resolved_on_ucas: 'resolved_on_ucas',
   }
+
+  def ready_to_resolve?
+    action_taken.present? && !action_needed? && !resolved?
+  end
+
+  def resolved?
+    action_taken.include? %w[resolved_on_apply resolved_on_ucas]
+  end
 
   def trackable_applicant_key
     ucas_matched_applications.first.trackable_applicant_key
