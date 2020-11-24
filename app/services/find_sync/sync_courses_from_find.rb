@@ -10,7 +10,12 @@ module FindSync
       @provider_recruitment_cycle_year = provider_recruitment_cycle_year
 
       find_provider.courses.each do |find_course|
-        create_or_update_course(find_course)
+        teacher_training_api_course = TeacherTrainingAPI::Course.fetch(
+          recruitment_cycle_year: provider_recruitment_cycle_year,
+          provider_code: @provider.code,
+          course_code: find_course.course_code,
+        )
+        create_or_update_course(find_course, teacher_training_api_course)
       end
     rescue JsonApiClient::Errors::ApiError
       raise FindSync::SyncError
@@ -29,7 +34,7 @@ module FindSync
       end
     end
 
-    def create_or_update_course(find_course)
+    def create_or_update_course(find_course, teacher_training_api_course)
       course = provider.courses.find_or_create_by(
         code: find_course.course_code,
         recruitment_cycle_year: find_course.recruitment_cycle_year,
@@ -42,6 +47,8 @@ module FindSync
       end
 
       assign_course_attributes_from_find(course, find_course)
+      assign_course_attributes_from_teacher_training_api(course, teacher_training_api_course)
+
       add_accredited_provider(course, find_course[:accrediting_provider])
 
       course.save!
@@ -94,11 +101,13 @@ module FindSync
       course.exposed_in_find = find_course.findable?
       course.subject_codes = find_course.subject_codes
       course.funding_type = find_course.funding_type
-      # these two fields are in the API docs, but not actually in the API yet
-      course.program_type = find_course.try(:program_type)
-      course.qualifications = find_course.try(:qualifications)
       course.age_range = find_course.age_range_in_years&.humanize
       course.withdrawn = find_course.content_status == 'withdrawn'
+    end
+
+    def assign_course_attributes_from_teacher_training_api(course, teacher_training_api_course)
+      course.program_type = teacher_training_api_course.program_type
+      course.qualifications = teacher_training_api_course.qualifications
     end
 
     def add_accredited_provider(course, find_accredited_provider)

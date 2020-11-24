@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
   include FindAPIHelper
+  include TeacherTrainingAPIHelper
 
   describe '.call' do
     context 'ingesting a brand new provider' do
@@ -41,6 +42,15 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           findable: true,
         )
 
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
+          specified_attributes: {
+            qualifications: %w[qts],
+            program_type: 'scitt_programme',
+          },
+        )
+
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
 
         course_option = CourseOption.last
@@ -52,6 +62,8 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
         expect(course_option.course.start_date).to eq Time.zone.local(stubbed_recruitment_cycle_year, 10, 31)
         expect(course_option.course.course_length).to eq 'OneYear'
         expect(course_option.course.age_range).to eq '4 to 8'
+        expect(course_option.course.qualifications).to eq %w[qts]
+        expect(course_option.course.program_type).to eq 'scitt_programme'
         expect(course_option.site.name).to eq 'Main site'
         expect(course_option.site.address_line1).to eq 'Gorse SCITT'
         expect(course_option.site.address_line2).to eq 'C/O The Bruntcliffe Academy'
@@ -69,6 +81,11 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           site_address_line2: nil,
         )
 
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
+        )
+
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
 
         course_option = CourseOption.last
@@ -82,6 +99,12 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           course_code: '9CBA',
           findable: true,
         )
+
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
+        )
+
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
         expect(CourseOption.count).to eq 1
         CourseOption.first.update!(vacancy_status: 'no_vacancies')
@@ -97,6 +120,12 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           course_code: '9CBA',
           content_status: 'withdrawn',
         )
+
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
+        )
+
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
         expect(CourseOption.count).to eq 1
         Course.first.update!(withdrawn: false)
@@ -112,6 +141,11 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           study_mode: 'full_time',
           accredited_provider_code: 'DEF',
           accredited_provider_name: 'Test Accredited Provider',
+        )
+
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
         )
 
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
@@ -130,6 +164,11 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           accredited_provider_name: 'ABC College',
         )
 
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
+        )
+
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
 
         expect(Course.find_by(code: '9CBA').accredited_provider).to be_nil
@@ -139,6 +178,11 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
         course = create(:course, accredited_provider: create(:provider), code: '9CBA', provider: create(:provider, code: 'ABC'))
 
         stub_find_api_provider_200(
+          provider_code: 'ABC',
+          course_code: '9CBA',
+        )
+
+        stub_teacher_training_api_course(
           provider_code: 'ABC',
           course_code: '9CBA',
         )
@@ -155,6 +199,11 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           study_mode: 'full_time',
           accredited_provider_code: 'DEF',
           accredited_provider_name: 'Test Accredited Provider',
+        )
+
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
         )
 
         expect {
@@ -175,6 +224,11 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           findable: true,
         )
 
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
+        )
+
         expect {
           described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
         }.not_to change(ProviderRelationshipPermissions, :count)
@@ -186,6 +240,11 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           course_code: '9CBA',
           accredited_provider_code: 'ABC',
           findable: true,
+        )
+
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
         )
 
         expect {
@@ -200,6 +259,11 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           study_mode: 'full_time_or_part_time',
         )
 
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
+        )
+
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
 
         course = Provider.find_by_code('ABC').courses.find_by_code('9CBA')
@@ -211,6 +275,11 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           provider_code: 'ABC',
           course_code: '9CBA',
           study_mode: 'full_time_or_part_time',
+        )
+
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
         )
 
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
@@ -232,6 +301,11 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           findable: true,
         )
 
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
+        )
+
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
 
         expect(@existing_provider.reload.region_code).to eq 'north_west'
@@ -243,6 +317,11 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           course_code: '9CBA',
           site_code: 'A',
           findable: true,
+        )
+
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
         )
 
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
@@ -278,55 +357,15 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
           findable: true,
         )
 
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
+        )
+
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
         course_option = CourseOption.last
 
         expect(course_option.course.subject_codes).to eq(%w[08])
-      end
-
-      # These fields are not present in the Find API yet, but will be soon
-      # Our code should set them to nil at first, then the correct values
-      # once they are populated
-      it 'correctly updates qualifications and program_type when they are not present' do
-        stub_find_api_provider_200(
-          provider_code: 'ABC',
-          course_code: '9CBA',
-          findable: true,
-        )
-
-        described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
-        course_option = CourseOption.last
-
-        expect(course_option.course.qualifications).to be_nil
-        expect(course_option.course.program_type).to be_nil
-      end
-
-      it 'correctly updates qualifications when qualifications are present' do
-        stub_find_api_provider_200_with_qualifications_and_program_type(
-          provider_code: 'ABC',
-          course_code: '9CBA',
-          findable: true,
-        )
-
-        described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
-        course_option = CourseOption.last
-
-        expect(course_option.course.qualifications).to eq(%w[PG PF])
-      end
-
-      it 'correctly updates program_type when program_type is present' do
-        stub_find_api_provider_200_with_qualifications_and_program_type(
-          provider_code: 'ABC',
-          course_code: '9CBA',
-          findable: true,
-          program_type: 'SD',
-        )
-
-        described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: stubbed_recruitment_cycle_year)
-        course_option = CourseOption.last
-
-        # the enum field converts the value from the short code to the expanded value
-        expect(course_option.course.program_type).to eq('school_direct_training_programme')
       end
     end
 
@@ -336,6 +375,13 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
         @existing_provider = create :provider, code: 'ABC', sync_courses: true
 
         stub_find_api_provider_200(provider_code: 'ABC', course_code: '9CBA', findable: true)
+
+        stub_teacher_training_api_course(
+          recruitment_cycle_year: 2020,
+          provider_code: 'ABC',
+          course_code: '9CBA',
+        )
+
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: 2020)
 
         set_stubbed_recruitment_cycle_year!(2021)
@@ -345,6 +391,12 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
         expect(Course.count).to eq 1
 
         stub_find_api_provider_200(provider_code: 'ABC', course_code: '9CBA', findable: true)
+
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
+        )
+
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: 2021)
 
         expect(Course.count).to eq 2
@@ -355,6 +407,12 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
         existing_course.update(open_on_apply: true)
 
         stub_find_api_provider_200(provider_code: 'ABC', course_code: '9CBA', findable: true)
+
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
+        )
+
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: 2021)
 
         new_course = Course.find_by(recruitment_cycle_year: 2021)
@@ -363,6 +421,12 @@ RSpec.describe FindSync::SyncProviderFromFind, sidekiq: true do
         new_course.update(open_on_apply: false)
 
         stub_find_api_provider_200(provider_code: 'ABC', course_code: '9CBA', findable: true)
+
+        stub_teacher_training_api_course(
+          provider_code: 'ABC',
+          course_code: '9CBA',
+        )
+
         described_class.call(provider_name: 'ABC College', provider_code: 'ABC', provider_recruitment_cycle_year: 2021)
 
         expect(new_course.reload).not_to be_open_on_apply
