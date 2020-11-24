@@ -7,13 +7,7 @@ RSpec.describe UCASMatch do
   let(:course1) { application_form_awaiting_provider_decision.application_choices.first.course_option.course }
 
   describe '#action_needed?' do
-    it 'returns false if ucas match is processed' do
-      ucas_match = create(:ucas_match, matching_state: 'processed')
-
-      expect(ucas_match.action_needed?).to eq(false)
-    end
-
-    it 'returns false if initial emails were sent and we don not need to send the reminders yet' do
+    it 'returns false if initial emails were sent and we do not need to send the reminders yet' do
       initial_emails_sent_at = Time.zone.now
       ucas_match = create(:ucas_match, matching_state: 'new_match', action_taken: 'initial_emails_sent', candidate_last_contacted_at: initial_emails_sent_at)
       allow(ucas_match).to receive(:dual_application_or_dual_acceptance?).and_return(true)
@@ -33,7 +27,7 @@ RSpec.describe UCASMatch do
       end
     end
 
-    it 'returns false if reminder emails were sent and we don not need to request withdrawal from UCAS yet' do
+    it 'returns false if reminder emails were sent and we do not need to request withdrawal from UCAS yet' do
       ucas_match = create(:ucas_match, matching_state: 'new_match', action_taken: 'reminder_emails_sent', candidate_last_contacted_at: Time.zone.now)
       allow(ucas_match).to receive(:dual_application_or_dual_acceptance?).and_return(true)
       allow(ucas_match).to receive(:need_to_request_withdrawal_from_ucas?).and_return(false)
@@ -53,7 +47,7 @@ RSpec.describe UCASMatch do
       ucas_match = create(:ucas_match, matching_state: 'new_match', action_taken: 'ucas_withdrawal_requested', candidate_last_contacted_at: Time.zone.now)
       allow(ucas_match).to receive(:dual_application_or_dual_acceptance?).and_return(true)
 
-      expect(ucas_match.action_needed?).to eq(true)
+      expect(ucas_match.action_needed?).to eq(false)
     end
 
     it 'returns true if there is a dual application or dual acceptance' do
@@ -150,7 +144,7 @@ RSpec.describe UCASMatch do
       end
     end
 
-    it 'returns false if initial emails were sent and we don not need to send the reminders yet' do
+    it 'returns false if initial emails were sent and we do not need to send the reminders yet' do
       emails_sent_at = Time.zone.now
       ucas_match = create(:ucas_match, matching_state: 'new_match', action_taken: 'initial_emails_sent', candidate_last_contacted_at: emails_sent_at)
 
@@ -179,7 +173,7 @@ RSpec.describe UCASMatch do
       end
     end
 
-    it 'returns false if reminder emails were sent and we don not need to request withdrawal from ucas yet' do
+    it 'returns false if reminder emails were sent and we do not need to request withdrawal from ucas yet' do
       emails_sent_at = Time.zone.now
       ucas_match = create(:ucas_match, matching_state: 'new_match', action_taken: 'reminder_emails_sent', candidate_last_contacted_at: emails_sent_at)
 
@@ -219,10 +213,10 @@ RSpec.describe UCASMatch do
       expect(ucas_match.next_action).to eq(:ucas_withdrawal_requested)
     end
 
-    it 'returns :confirmed_withdrawal_from_ucas if withdrawal from UCAS was requested' do
+    it 'returns nil if withdrawal from UCAS was requested' do
       ucas_match = create(:ucas_match, matching_state: 'new_match', action_taken: 'ucas_withdrawal_requested', candidate_last_contacted_at: Time.zone.now)
 
-      expect(ucas_match.next_action).to eq(:confirmed_withdrawal_from_ucas)
+      expect(ucas_match.next_action).to eq(nil)
     end
   end
 
@@ -249,12 +243,6 @@ RSpec.describe UCASMatch do
       ucas_match = create(:ucas_match, matching_state: 'new_match', action_taken: 'ucas_withdrawal_requested')
 
       expect(ucas_match.last_action).to eq(:ucas_withdrawal_requested)
-    end
-
-    it 'returns :confirmed_withdrawal_from_ucas if reminder emails were sent and the match is processed' do
-      ucas_match = create(:ucas_match, matching_state: 'processed', action_taken: 'ucas_withdrawal_requested')
-
-      expect(ucas_match.last_action).to eq(:confirmed_withdrawal_from_ucas)
     end
   end
 end

@@ -103,26 +103,7 @@ RSpec.describe SupportInterface::UCASMatchActionComponent do
 
         result = render_inline(described_class.new(ucas_match))
 
-        expect(result.text).to include('Action needed Confirm withdrawal from UCAS')
-        expect(result.css('input').attr('value').value).to include('Confirm the application was withdrawn from UCAS')
-        expect(result.css('form').attr('action').value).to include('/process-match')
-        expect(result.text).to include('We need to ensure that UCAS have removed the candidate’s duplicate application from UTT.')
-      end
-    end
-
-    it 'renders correct information after withdrawal from UCAS was confirmed by a support user' do
-      Timecop.freeze(Time.zone.local(2020, 10, 19, 12, 0, 0)) do
-        ucas_match = create(:ucas_match,
-                            matching_state: 'processed',
-                            scheme: 'U',
-                            action_taken: 'ucas_withdrawal_requested',
-                            candidate_last_contacted_at: Time.zone.now - 1.day)
-        allow(ucas_match).to receive(:dual_application_or_dual_acceptance?).and_return(true)
-
-        result = render_inline(described_class.new(ucas_match))
-
         expect(result.text).to include('No action required')
-        expect(result.text).to include('We confirmed that the candidate was withdrawn from UCAS. We contacted UCAS to request removal from UTT on the 18 October 2020')
       end
     end
 
