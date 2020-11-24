@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Sync from find' do
   include FindAPIHelper
+  include TeacherTrainingAPIHelper
 
   scenario 'a courses study mode changes between syncs' do
     given_there_is_a_full_time_course_on_find
@@ -21,7 +22,12 @@ RSpec.describe 'Sync from find' do
   end
 
   def given_there_is_a_full_time_course_on_find
-    stub_find_api_provider_200(provider_name: 'ABC College', provider_code: 'ABC', study_mode: 'full_time')
+    stub_find_api_provider_200(provider_name: 'ABC College', course_code: 'X130', provider_code: 'ABC', study_mode: 'full_time')
+
+    stub_teacher_training_api_course(
+      provider_code: 'ABC',
+      course_code: 'X130',
+    )
   end
 
   def when_sync_provider_from_find_is_called

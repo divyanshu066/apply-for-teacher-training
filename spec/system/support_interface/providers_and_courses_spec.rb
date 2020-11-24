@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.feature 'Providers and courses' do
   include DfESignInHelpers
   include FindAPIHelper
+  include TeacherTrainingAPIHelper
 
   scenario 'User syncs provider and browses providers' do
     given_i_am_a_support_user
@@ -115,6 +116,11 @@ RSpec.feature 'Providers and courses' do
       study_mode: 'full_time',
     )
 
+    stub_teacher_training_api_course(
+      provider_code: 'ABC',
+      course_code: 'ABC-1',
+    )
+
     @request2 = stub_find_api_provider_200(
       provider_code: 'DEF',
       provider_name: 'Gorse SCITT',
@@ -122,11 +128,21 @@ RSpec.feature 'Providers and courses' do
       site_code: 'Y',
     )
 
+    stub_teacher_training_api_course(
+      provider_code: 'DEF',
+      course_code: 'DEF-1',
+    )
+
     @request3 = stub_find_api_provider_200(
       provider_code: 'GHI',
       provider_name: 'Somerset SCITT Consortium',
       course_code: 'GHI-1',
       site_code: 'C',
+    )
+
+    stub_teacher_training_api_course(
+      provider_code: 'GHI',
+      course_code: 'GHI-1',
     )
 
     Sidekiq::Testing.inline! do

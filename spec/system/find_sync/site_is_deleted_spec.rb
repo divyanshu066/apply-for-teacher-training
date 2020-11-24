@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Sync from find' do
   include FindAPIHelper
+  include TeacherTrainingAPIHelper
 
   scenario 'a site is removed between syncs' do
     given_there_is_a_course_on_find_with_multiple_sites
@@ -23,7 +24,12 @@ RSpec.describe 'Sync from find' do
   end
 
   def given_there_is_a_course_on_find_with_multiple_sites
-    stub_find_api_provider_200_with_multiple_sites(provider_name: 'ABC College', provider_code: 'ABC', study_mode: 'full_time')
+    stub_find_api_provider_200_with_multiple_sites(provider_name: 'ABC College', provider_code: 'ABC', course_code: 'X100', study_mode: 'full_time')
+
+    stub_teacher_training_api_course(
+      provider_code: 'ABC',
+      course_code: 'X100',
+    )
   end
 
   def when_sync_provider_from_find_is_called
@@ -37,7 +43,12 @@ RSpec.describe 'Sync from find' do
   end
 
   def when_find_says_that_a_site_is_no_longer_listed_for_that_course
-    stub_find_api_provider_200(provider_name: 'ABC College', provider_code: 'ABC', study_mode: 'full_time')
+    stub_find_api_provider_200(provider_name: 'ABC College', provider_code: 'ABC', course_code: 'X100', study_mode: 'full_time')
+
+    stub_teacher_training_api_course(
+      provider_code: 'ABC',
+      course_code: 'X100',
+    )
   end
 
   def then_the_course_option_for_that_site_is_deleted
