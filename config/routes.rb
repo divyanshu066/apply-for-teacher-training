@@ -683,8 +683,6 @@ Rails.application.routes.draw do
       post '/process-match' => 'ucas_matches#process_match', as: :process_match
     end
 
-    get '/application_choices/:application_choice_id' => 'application_choices#show', as: :application_choice
-
     get '/candidates' => 'candidates#index'
 
     scope path: '/candidates/:candidate_id' do
