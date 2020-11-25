@@ -12,6 +12,11 @@ module SupportInterface
         @candidates = @candidates.where('CONCAT(email_address) ILIKE ?', "%#{params[:q]}%")
       end
 
+      if params[:candidate_number]
+        candidate_number = params[:candidate_number].tr('^0-9', '')
+        @candidates = @candidates.where('CONCAT(id) LIKE ?', "%#{candidate_number}%")
+      end
+
       @filter = SupportInterface::CandidatesFilter.new(params: params)
     end
 
