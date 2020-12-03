@@ -9,18 +9,21 @@ class GetApplicationChoicesForProviders
     course_option: [{ course: %i[provider] }, :site],
   ].freeze
 
-  def self.call(providers:, vendor_api: false, includes: DEFAULT_INCLUDES)
+  def self.call(providers:, vendor_api: false, includes: nil)
     providers = Array.wrap(providers).select(&:present?)
 
     raise MissingProvider if providers.none?
 
     statuses = vendor_api ? ApplicationStateChange.states_visible_to_provider_without_deferred : ApplicationStateChange.states_visible_to_provider
 
-    ApplicationChoice.includes(*includes)
+    includes = includes.nil? ? DEFAULT_INCLUDES : includes
+
+    applications = ApplicationChoice.joins(:course)
       .where('courses.provider_id' => providers, 'courses.recruitment_cycle_year' => RecruitmentCycle.years_visible_to_providers)
-      .or(ApplicationChoice.includes(*includes)
+      .or(ApplicationChoice.joins(:course)
         .where('courses.accredited_provider_id' => providers, 'courses.recruitment_cycle_year' => RecruitmentCycle.years_visible_to_providers))
       .where('status IN (?)', statuses)
-      .select('"application_choices"."id" AS id')
+
+    includes.present? ? applications.includes(*includes) : applications
   end
 end

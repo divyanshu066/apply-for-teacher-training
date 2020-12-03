@@ -27,11 +27,6 @@ RSpec.describe GetActivityLogEvents, with_audited: true do
   end
 
   describe '#call' do
-    it 'raises an error when application_choices do not respond to #to_sql ' do
-      array = 2.times.map { create_application_choice_for_course(course_provider_a) }
-      expect { GetActivityLogEvents.call(application_choices: array) }.to raise_error(NoMethodError)
-    end
-
     it 'returns an empty array if no audits are found' do
       expect(service_call).to eq([])
     end
