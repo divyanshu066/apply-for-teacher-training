@@ -31,7 +31,7 @@
         ) %>
       <% else %>
         <%= render(
-          CandidateInterface::ApplicationFormApplyAgainCourseChoiceComponent.new(
+          CandidateInterface::ApplicationFormCourseChoiceComponent.new(
             completed: @application_form_presenter.course_choices_completed?,
           )
         ) %>
