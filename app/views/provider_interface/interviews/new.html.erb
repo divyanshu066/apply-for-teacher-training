@@ -1,3 +1,26 @@
-<div>
-  hi
+<% content_for :browser_title, title_with_error_prefix("Set up an interview", nil) %>
+<% content_for :before_content, govuk_back_link_to %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_with model: @new_interview_form,
+          url: provider_interface_application_choice_check_interview_path(@application_choice.id),
+          method: :get do |f| %>
+
+      <%= f.govuk_error_summary %>
+
+      <span class="govuk-caption-l"><%= @application_choice.application_form.full_name %></span>
+      <h1 class="govuk-heading-l">Set up an interview</h1>
+      
+      <%= f.govuk_radio_buttons_fieldset :provider, inline: true, legend: { text: 'Organisation carrying out interview', size: 'm' } do %>
+        <%= f.govuk_radio_button :consent_to_be_contacted, true, label: { text: t('application_feedback.consent_to_be_contacted.yes') }, link_errors: true %>
+        <%= f.govuk_radio_button :consent_to_be_contacted, false, label: { text:t('application_feedback.consent_to_be_contacted.no') } %>
+      <% end %>
+      <%= f.govuk_text_area :location, label: { text: 'Address of online meeting details', size: 'm' } %>
+
+      <%= f.govuk_text_area :additional_details, label: { text: 'Additional details (optional)', size: 'm' } %>
+
+      <%= f.govuk_submit 'Continue' %>
+    <% end %>
+  </div>
 </div>

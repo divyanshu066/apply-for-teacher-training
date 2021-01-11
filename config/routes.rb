@@ -614,6 +614,7 @@ Rails.application.routes.draw do
 
       get '/interviews/new' => 'interviews#new', as: :application_choice_new_interview
       post '/interviews/new' => 'interviews#create', as: :application_choice_create_interview
+      get '/interviews/check' => 'interviews#check', as: :application_choice_check_interview
 
 
       resources :notes, only: %i[index show new create], as: :application_choice_notes
