@@ -292,6 +292,8 @@ GEM
       webfinger (>= 1.0.1)
     orm_adapter (0.5.0)
     parallel (1.19.2)
+    parallel_tests (3.4.0)
+      parallel
     parser (2.7.2.0)
       ast (~> 2.4.1)
     patience_diff (1.1.0)
@@ -478,6 +480,7 @@ GEM
       activesupport (>= 3)
       attr_required (>= 0.0.5)
       httpclient (>= 2.4)
+    test-prof (0.12.2)
     thor (1.0.1)
     thread_safe (0.3.6)
     timecop (0.9.2)
@@ -572,6 +575,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection
   omniauth_openid_connect
   openapi3_parser (= 0.8.2)
+  parallel_tests
   pdfkit
   pg (~> 1.2.3)
   pry
@@ -597,6 +601,7 @@ DEPENDENCIES
   skylight
   strip_attributes
   super_diff
+  test-prof
   timecop
   tzinfo-data
   uk_postcode

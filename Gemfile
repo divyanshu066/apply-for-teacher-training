@@ -108,6 +108,7 @@ group :test do
   gem 'deepsort'
   gem 'ruby-jmeter'
   gem 'super_diff'
+  gem 'test-prof'
 end
 
 group :development, :test do
@@ -119,4 +120,5 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'bullet'
+  gem 'parallel_tests'
 end
