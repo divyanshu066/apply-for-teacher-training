@@ -2,15 +2,15 @@ class FindSyncCheck < OkComputer::Check
   LAST_SUCCESSFUL_SYNC = 'last-successful-sync-with-find'.freeze
 
   def self.set_last_sync(date)
-    Redis.current.set(LAST_SUCCESSFUL_SYNC, date)
+    ApplyRedisConnection.current.set(LAST_SUCCESSFUL_SYNC, date)
   end
 
   def self.clear_last_sync
-    Redis.current.del(LAST_SUCCESSFUL_SYNC)
+    ApplyRedisConnection.current.del(LAST_SUCCESSFUL_SYNC)
   end
 
   def self.last_sync
-    Redis.current.get(LAST_SUCCESSFUL_SYNC)
+    ApplyRedisConnection.current.get(LAST_SUCCESSFUL_SYNC)
   end
 
   def check

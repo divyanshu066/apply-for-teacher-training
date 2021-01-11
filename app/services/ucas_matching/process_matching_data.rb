@@ -38,7 +38,7 @@ module UCASMatching
   private
 
     def process_file_in_movit_folder(movit_file)
-      if Redis.current.sismember('processed-ucas-files', movit_file.fetch('id'))
+      if ApplyRedisConnection.current.sismember('processed-ucas-files', movit_file.fetch('id'))
         Rails.logger.info "Skipping file with ID #{movit_file.fetch('id')} - we’ve already processed it"
         return
       else
@@ -67,7 +67,7 @@ module UCASMatching
         process_csv_file(csv_file)
       end
 
-      Redis.current.sadd('processed-ucas-files', movit_file.fetch('id'))
+      ApplyRedisConnection.current.sadd('processed-ucas-files', movit_file.fetch('id'))
     end
 
     def files_in_ucas_movit_folder

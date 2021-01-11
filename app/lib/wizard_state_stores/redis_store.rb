@@ -3,7 +3,7 @@ require 'redis'
 module WizardStateStores
   class RedisStore
     def initialize(key:)
-      @redis = Redis.current
+      @redis = ApplyRedisConnection.current
       @key = key
     end
 
