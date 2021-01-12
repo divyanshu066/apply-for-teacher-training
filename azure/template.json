@@ -576,7 +576,7 @@
                         "value": "[parameters('appServicePlanSize')]"
                     },
                     "appServicePlanInstances": {
-                        "value": "[parameters('appServicePlanInstances')]"
+                        "value": "2"
                     }
                 }
             }
