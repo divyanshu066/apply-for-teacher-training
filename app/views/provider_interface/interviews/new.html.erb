@@ -11,12 +11,20 @@
 
       <span class="govuk-caption-l"><%= @application_choice.application_form.full_name %></span>
       <h1 class="govuk-heading-l">Set up an interview</h1>
-      
-      <%= f.govuk_radio_buttons_fieldset :provider, inline: true, legend: { text: 'Organisation carrying out interview', size: 'm' } do %>
-        <%= f.govuk_radio_button :consent_to_be_contacted, true, label: { text: t('application_feedback.consent_to_be_contacted.yes') }, link_errors: true %>
-        <%= f.govuk_radio_button :consent_to_be_contacted, false, label: { text:t('application_feedback.consent_to_be_contacted.no') } %>
+
+      <%= f.govuk_date_field :date, legend: { text: 'Date', size: 'm' }, hint: { text: 'For example, 31 3 2020' } %>
+
+      <%= f.govuk_text_field :time, width: 5, label: { text: 'Time', size: 'm' }, hint: { text: 'For example, 9am or 2:30pm - enter 12pm for midday' } %>
+
+      <% if make_decisions_permission_orgs.count > 1 %>
+        <%= f.govuk_radio_buttons_fieldset :provider_ids, legend: { text: 'Organisation carrying out interview', size: 'm' } do %>
+          <% make_decisions_permission_orgs.each do |provider| %>
+            <%= f.govuk_radio_button :provider_ids, provider.id, label: { text: provider.name } %>
+          <% end %>
+        <% end %>
       <% end %>
-      <%= f.govuk_text_area :location, label: { text: 'Address of online meeting details', size: 'm' } %>
+
+      <%= f.govuk_text_area :location, label: { text: 'Address or online meeting details', size: 'm' } %>
 
       <%= f.govuk_text_area :additional_details, label: { text: 'Additional details (optional)', size: 'm' } %>
 
