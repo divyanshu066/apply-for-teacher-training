@@ -13,7 +13,9 @@ module ProviderInterface
     end
 
     def create
-      #  Create the interview
+      @new_interview_form = NewInterviewForm(new_interview_params)
+      @new_interview_form.save
+      redirect_to provider_interface_application_choice_path(@application_choice)
     end
 
   private
@@ -34,9 +36,10 @@ module ProviderInterface
     def new_interview_params
       params
         .require(:provider_interface_new_interview_form)
-        .permit(:'date(3i)', :'date(2i)', :'date(1i)', :time)
+        .permit(:'date(3i)', :'date(2i)', :'date(1i)', :time, :location, :additional_details)
         .transform_keys { |key| date_field_to_attribute(key) }
         .transform_values(&:strip)
+        .merge(application_choice: @application_choice)
     end
 
     def date_field_to_attribute(key)
