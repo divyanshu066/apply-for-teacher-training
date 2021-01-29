@@ -4,7 +4,7 @@ Dear <%= @application_form.first_name %>,
 
 You have an offer from <%= @provider_name %> to study <%= @course_name %>.
 
-<%= render "candidate_mailer/offer_conditions" %>
+<%= render 'candidate_mailer/offer_conditions' %>
 
 Contact <%= @provider_name %> if you have any questions about this.
 
@@ -12,7 +12,7 @@ Contact <%= @provider_name %> if you have any questions about this.
 
 If you do not reply by <%= @application_choice.decline_by_default_at.to_s(:govuk_date) %>, your application will be withdrawn.
 
-<%= render "offer_list" %>
+<%= render 'offer_list' %>
 
 Sign in to your account to respond:
 

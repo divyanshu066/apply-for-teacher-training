@@ -4,8 +4,15 @@ linters:
   FinalNewline:
     enabled: true
   Rubocop:
+    enabled: true
     rubocop_config:
+      AllCops:
+        DisabledByDefault: true
       Style/StringLiterals:
         Enabled: true
   SpaceAroundErbTag:
+    enabled: true
+  SpaceInHtmlTag:
+    enabled: true
+  SpaceIndentation:
     enabled: true

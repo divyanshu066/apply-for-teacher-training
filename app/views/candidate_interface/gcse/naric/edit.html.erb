@@ -1,4 +1,4 @@
-<% content_for :title, title_with_error_prefix(t("gcse_edit_naric.page_title", subject: @subject.capitalize), @naric_form.errors.any?) %>
+<% content_for :title, title_with_error_prefix(t('gcse_edit_naric.page_title', subject: @subject.capitalize), @naric_form.errors.any?) %>
 <% content_for :before_content, govuk_back_link_to %>
 
 <div class="govuk-grid-row">
@@ -7,7 +7,7 @@
       <%= f.govuk_error_summary %>
 
       <h1 class="govuk-heading-xl">
-        <%= t("gcse_edit_naric.page_title", subject: @subject.capitalize) %>
+        <%= t('gcse_edit_naric.page_title', subject: @subject.capitalize) %>
       </h1>
 
       <p class="govuk-body">You can get a statement from the National Recognition Information Centre for the United Kingdom (UK NARIC) which shows how your qualifications compare to UK qualifications. Not all providers need this.</p>

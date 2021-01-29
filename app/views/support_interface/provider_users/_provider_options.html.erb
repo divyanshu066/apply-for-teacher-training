@@ -1,7 +1,7 @@
 <div class="app-checkboxes-scroll">
   <% f.object.forms_for_possible_permissions.each do |permission_form| %>
     <%= cache [permission_form.provider, permission_form.provider_permission] do %>
-      <%= f.fields_for "provider_permissions_forms[]", permission_form do |pf| %>
+      <%= f.fields_for 'provider_permissions_forms[]', permission_form do |pf| %>
         <%= pf.govuk_check_box :active, true, multiple: false,
                                 label: { text: permission_form.provider.name_and_code },
                                 link_errors: true do %>

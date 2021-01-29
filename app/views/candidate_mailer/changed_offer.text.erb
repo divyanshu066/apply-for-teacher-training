@@ -17,9 +17,9 @@ If you were not expecting this change, contact <%= @course_option.course.provide
 
 <% if @is_awaiting_decision %>
 
-# You can accept the offer or wait to hear back about other applications
+# You can accept the offer or wait to hear back about other 'pplications
 
-<%= render "wait_or_respond" %>
+<%= render 'wait_or_respond' %>
 
 <% else %>
 
@@ -28,7 +28,7 @@ If you were not expecting this change, contact <%= @course_option.course.provide
 If you do not reply by <%= @application_choice.decline_by_default_at.to_s(:govuk_date) %>, your application will be withdrawn.
 
 <% if @offers.count > 1 %>
-    <%= render "offer_list" %>
+    <%= render 'offer_list' %>
 <% end %>
 
 Sign in to your account to respond:
