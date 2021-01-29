@@ -10,7 +10,7 @@ If you do not respond by <%= @dbd_date %>, your application will be withdrawn.
 
   <%= render "offer_list" %>
 
-<% else%>
+<% else %>
 
 You have until <%= @dbd_date %> to respond to your offer to study <%= @application_choices.first.course_option.course.name %> at <%= @application_choices.first.course_option.course.provider.name %>.
 

@@ -14,13 +14,13 @@
     </h1>
 
     <%= render SummaryCardComponent.new(editable: true, border: false, rows: [
-    {
-      key: 'Reason for cancelling interview',
-      value: @interview.cancellation_reason
-    },
-    {}
+      {
+        key: 'Reason for cancelling interview',
+        value: @interview.cancellation_reason
+      },
+      {}
     ]
-    ) %>
+                                       ) %>
 
     <%= form_with model: @interview, url: cancel_confirm_provider_interface_application_choice_interview_path(@application_choice, @interview), method: :post do |f| %>
       <div class='govuk-form-group'>
