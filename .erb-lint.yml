@@ -1,0 +1,11 @@
+glob: "app/views/**/*.{html,text,js}{+*,}.erb"
+EnableDefaultLinters: false
+linters:
+  FinalNewline:
+    enabled: true
+  Rubocop:
+    rubocop_config:
+      Style/StringLiterals:
+        Enabled: true
+  SpaceAroundErbTag:
+    enabled: true
