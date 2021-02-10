@@ -16,35 +16,16 @@ class GetApplicationChoicesForProviders
 
     raise MissingProvider if providers.none?
 
-    statuses = vendor_api ? ApplicationStateChange.states_visible_to_provider_without_deferred : ApplicationStateChange.states_visible_to_provider
+    statuses = vendor_api ? ApplicationStateChange.states_visible_to_provider_without_deferred :
+                            ApplicationStateChange.states_visible_to_provider
 
-    with_course_joins = ApplicationChoice
-      .joins('INNER JOIN course_options AS current_option ON COALESCE(offered_course_option_id, course_option_id) = current_option.id')
-      .joins('INNER JOIN course_options AS original_option ON course_option_id = original_option.id')
-      .joins('INNER JOIN courses AS current_course ON current_option.course_id = current_course.id')
-      .joins('INNER JOIN courses AS original_course ON original_option.course_id = original_course.id')
+    provider_courses = Course.where(provider: providers)
+                             .or(Course.where(accredited_provider: providers))
+                             .where(recruitment_cycle_year: recruitment_cycle_year)
 
-    applications =
-      with_course_joins.where(
-        'original_course.provider_id' => providers,
-        'original_course.recruitment_cycle_year' => recruitment_cycle_year,
-      ).or(
-        with_course_joins.where(
-          'original_course.accredited_provider_id' => providers,
-          'original_course.recruitment_cycle_year' => recruitment_cycle_year,
-        ),
-      ).or(
-        with_course_joins.where(
-          'current_course.provider_id' => providers,
-          'current_course.recruitment_cycle_year' => recruitment_cycle_year,
-        ),
-      ).or(
-        with_course_joins.where(
-          'current_course.accredited_provider_id' => providers,
-          'current_course.recruitment_cycle_year' => recruitment_cycle_year,
-        ),
-      )
-      .where('status IN (?)', statuses)
+    applications = ApplicationChoice.joins(:course).merge(provider_courses)
+                                    .left_joins(:offered_course).merge(provider_courses)
+                                    .where(status: statuses)
 
     applications.includes(*includes)
   end

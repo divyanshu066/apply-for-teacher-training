@@ -6,6 +6,7 @@ class ApplicationChoice < ApplicationRecord
   belongs_to :application_form, touch: true
   belongs_to :course_option
   belongs_to :offered_course_option, class_name: 'CourseOption', optional: true
+  has_one :offered_course, through: :offered_course_option, source: :course
   has_one :course, through: :course_option
   has_one :site, through: :course_option
   has_one :provider, through: :course
