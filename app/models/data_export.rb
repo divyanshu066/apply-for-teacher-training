@@ -105,6 +105,11 @@ class DataExport < ApplicationRecord
       description: 'A one time export for Monica. A bit too tough to run this one via a container',
       class: SupportInterface::RejectedCandidatesExport,
     },
+    notifications_export: {
+        name: 'Notifications',
+        description: 'Data to enable performance assesment of Notification feature',
+        class: SupportInterface::NotificationsExport,
+    },
   }.freeze
 
   belongs_to :initiator, polymorphic: true, optional: true
