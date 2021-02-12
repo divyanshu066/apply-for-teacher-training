@@ -3,6 +3,11 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+      <%= form_with model: @wizard,
+          url: check_provider_interface_application_choice_interview_path(@application_choice, @interview),
+          method: :get do |f| %>
+
+      <%= f.govuk_error_summary %>
 
       <span class="govuk-caption-l"><%= @application_choice.application_form.full_name %></span>
       <h1 class="govuk-heading-l"><%= t('.title') %></h1>
@@ -13,10 +18,6 @@
           <p class="govuk-body"><%= @application_choice.application_form.interview_preferences %></p>
         </div>
       <% end %>
-
-      <%= form_with model: @wizard,
-          url: check_provider_interface_application_choice_interview_path(@application_choice, @interview),
-          method: :get do |f| %>
 
       <%= render 'form', f: f %>
 
