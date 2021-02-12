@@ -203,4 +203,18 @@ RSpec.feature 'Provider gives feedback for application rejected by default' do
     expect(page).to have_content('Honesty and professionalism')
     expect(page).to have_content('We cannot accept references from your gran')
   end
+
+  def and_there_is_a_timeline_entry
+    click_on 'Timeline'
+
+    expect(page).to have_content('Feedback sent')
+    expect(page).to have_link('View feedback', href: provider_interface_application_choice_feedback_path(@application_choice))
+  end
+
+  def and_there_is_an_activity_log_entry
+    click_on 'Activity log'
+
+    expect(page).to have_content('sent feedback to')
+    expect(page).to have_link('View feedback', href: provider_interface_application_choice_feedback_path(@application_choice))
+  end
 end

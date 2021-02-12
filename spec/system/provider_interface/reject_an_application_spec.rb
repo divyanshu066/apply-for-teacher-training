@@ -195,4 +195,18 @@ RSpec.describe 'Reject an application' do
     expect(page).to have_content('Honesty and professionalism')
     expect(page).to have_content('We cannot accept references from your gran')
   end
+
+  def and_there_is_a_timeline_entry
+    click_on 'Timeline'
+
+    expect(page).to have_content('Application rejected')
+    expect(page).to have_link('View application', href: provider_interface_application_choice_path(@application_choice))
+  end
+
+  def and_there_is_an_activity_log_entry
+    click_on 'Activity log'
+
+    expect(page).to have_content('rejected')
+    expect(page).to have_link('View application', href: provider_interface_application_choice_path(@application_choice))
+  end
 end
