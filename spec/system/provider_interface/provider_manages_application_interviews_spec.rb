@@ -52,6 +52,42 @@ RSpec.describe 'A Provider viewing an individual application', with_audited: tru
     when_i_cancel_an_interview
     i_can_see_the_application_is_awaiting_provider_decision
     and_the_interview_tab_is_not_available
+
+    # TODO: the "make decision" prompt does not show here because of the flash message
+    when_i_reload_the_page
+    and_i_set_up_another_interview(days_in_future: 4)
+    and_another_interview_has_been_created('5 March 2020')
+
+    when_i_click_make_decision
+    and_i_make_an_offer
+    then_i_should_see_the_interview_on_the_interview_tab('5 March 2020')
+    but_i_should_not_see_the_set_up_change_or_cancel_interview_controls
+  end
+
+  def when_i_reload_the_page
+    visit current_path
+  end
+
+  def when_i_click_make_decision
+    click_link 'Make decision'
+  end
+
+  def and_i_make_an_offer
+    choose 'Make an offer'
+    click_button 'Continue'
+    click_button 'Continue' # conditions page
+    click_button 'Make offer'
+  end
+
+  def then_i_should_see_the_interview_on_the_interview_tab(date)
+    click_link 'Interviews'
+    and_an_interview_has_been_created(date)
+  end
+
+  def but_i_should_not_see_the_set_up_change_or_cancel_interview_controls
+    expect(page).not_to have_button('Set up interview')
+    expect(page).not_to have_link('Cancel interview')
+    expect(page).not_to have_link('Change interview')
   end
 
   def given_i_am_a_provider_user_with_dfe_sign_in
