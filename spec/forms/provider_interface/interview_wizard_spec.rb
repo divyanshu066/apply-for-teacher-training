@@ -67,6 +67,15 @@ RSpec.describe ProviderInterface::InterviewWizard do
       end
     end
 
+    describe '#time' do
+      let(:time) { '' }
+
+      it 'is invalid with the correct error when blank' do
+        expect(wizard).to be_invalid
+        expect(wizard.errors[:time]).to contain_exactly('Enter time')
+      end
+    end
+
     describe '#time_is_valid?' do
       let(:tomorrow) { 1.day.from_now }
       let(:day) { tomorrow.day }

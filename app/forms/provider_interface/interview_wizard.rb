@@ -12,13 +12,15 @@ module ProviderInterface
     attribute 'date(2i)', :string
     attribute 'date(1i)', :string
 
+    validates :provider_user, :application_choice, presence: true
     validates :date, date: { presence: true }
+    validates :time, presence: true
+    validate :time_is_valid?, unless: -> { time.blank? }
     validate :date_and_time_in_future, if: %i[date_and_time],
                                        unless: ->(c) { %i[date time].any? { |d| c.errors.keys.include?(d) } }
-    validate :time_is_valid?, if: :time
     validate :date_after_rbd_date, if: %i[date_and_time date_and_time_in_future]
-    validates :time, :provider_user, :location, :application_choice, presence: true
     validates :provider_id, presence: true, if: %i[application_choice provider_user multiple_application_providers?]
+    validates :location, presence: true
 
     def initialize(state_store, attrs = {})
       @state_store = state_store
@@ -39,7 +41,7 @@ module ProviderInterface
     end
 
     def date_and_time
-      Time.zone.local(date.year, date.month, date.day, parsed_time.hour, parsed_time.min) if date.is_a?(Date)
+      Time.zone.local(date.year, date.month, date.day, parsed_time.hour, parsed_time.min) if date.is_a?(Date) && parsed_time.is_a?(Time)
     end
 
     def date_and_time_in_future
